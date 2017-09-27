@@ -1,7 +1,7 @@
 # Личный проект «Пиксель хантер» [![Build status][travis-image]][travis-url]
 
 * Студент: [Екатерина Зощик](https://up.htmlacademy.ru/ecmascript/3/user/20096).
-* Наставник: `Неизвестно`.
+* Наставник: [Тимофей Маринин](https://up.htmlacademy.ru/ecmascript/3/user/55644).
 
 ---
 
