@@ -3,32 +3,30 @@ const ARROW_RIGHT_KEYCODE = 39;
 
 const mainElement = document.querySelector(`.central`);
 const screenTemplates = document.querySelectorAll(`template`);
-let usedTemplate;
+let currentScreenIndex;
 
 // Отрисовываем экран игры по переданному индексу из массива экранов
-function renderScreen(screenNumber) {
-  if (screenTemplates[screenNumber]) {
-    let screenElement = screenTemplates[screenNumber].content.cloneNode(true);
+function renderScreen(screenIndex) {
+  if (screenTemplates[screenIndex]) {
+    let screenElement = screenTemplates[screenIndex].content.cloneNode(true);
 
     mainElement.innerHTML = ``;
     mainElement.appendChild(screenElement);
-    usedTemplate = screenNumber;
+    currentScreenIndex = screenIndex;
   }
 }
 
 renderScreen(0);
 
 // Переключение экранов игры комбинацией Alt + arrow_key
-function onKeyDown(e) {
-  if (e.altKey && e.keyCode === ARROW_LEFT_KEYCODE) {
-    if (usedTemplate > 0) {
-      renderScreen(usedTemplate - 1);
-    }
-  } else if (e.altKey && e.keyCode === ARROW_RIGHT_KEYCODE) {
-    if (usedTemplate < screenTemplates.length - 1) {
-      renderScreen(usedTemplate + 1);
+function onScreenToggle(e) {
+  if (e.altKey) {
+    if (e.keyCode === ARROW_LEFT_KEYCODE && currentScreenIndex > 0) {
+      renderScreen(currentScreenIndex - 1);
+    } else if (e.keyCode === ARROW_RIGHT_KEYCODE && currentScreenIndex < screenTemplates.length - 1) {
+      renderScreen(currentScreenIndex + 1);
     }
   }
 }
 
-document.onkeydown = onKeyDown;
+document.onkeydown = onScreenToggle;
