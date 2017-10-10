@@ -1,4 +1,4 @@
 import renderScreen from './render-screen';
-import introScreenElement from './templates/intro';
+import intro from './templates/intro';
 
-renderScreen(introScreenElement);
+renderScreen(intro);

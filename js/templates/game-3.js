@@ -1,7 +1,7 @@
 import getHtmlElement from '../create-element';
 import renderScreen from '../render-screen';
-import statsScreenElement from './stats';
-import greetingScreenElement from './greeting';
+import stats from './stats';
+import greeting from './greeting';
 
 const innerHtml = String.raw`
   <header class="header">
@@ -57,18 +57,18 @@ const innerHtml = String.raw`
     </div>
   </footer>`;
 
-const game3ScreenElement = getHtmlElement(innerHtml);
-const answersForm = game3ScreenElement.querySelector(`.game__content`);
-const goBackButton = game3ScreenElement.querySelector(`.back`);
+const game3 = getHtmlElement(innerHtml);
+const answersForm = game3.querySelector(`.game__content`);
+const goBackButton = game3.querySelector(`.back`);
 
 answersForm.addEventListener(`click`, (e) => {
   if (e.target.classList.contains(`game__option`)) {
-    renderScreen(statsScreenElement);
+    renderScreen(stats);
   }
 });
 
 goBackButton.addEventListener(`click`, () => {
-  renderScreen(greetingScreenElement);
+  renderScreen(greeting);
 });
 
-export default game3ScreenElement;
+export default game3;

@@ -1,7 +1,7 @@
 import getHtmlElement from '../create-element';
 import renderScreen from '../render-screen';
-import game2ScreenElement from './game-2';
-import greetingScreenElement from './greeting';
+import game2 from './game-2';
+import greeting from './greeting';
 
 const innerHtml = String.raw`
   <header class="header">
@@ -70,23 +70,20 @@ const innerHtml = String.raw`
     </div>
   </footer>`;
 
-const game1ScreenElement = getHtmlElement(innerHtml);
-const answersForm = game1ScreenElement.querySelector(`.game__content`);
-const goBackButton = game1ScreenElement.querySelector(`.back`);
+const game1 = getHtmlElement(innerHtml);
+const answersForm = game1.querySelector(`.game__content`);
+const questions1 = answersForm.querySelectorAll(`input[name=question1]`);
+const questions2 = answersForm.querySelectorAll(`input[name=question2]`);
+const goBackButton = game1.querySelector(`.back`);
 
-answersForm.addEventListener(`click`, (e) => {
-  if (e.target.tagName === `INPUT`) {
-    const question1Checked = game1ScreenElement.querySelector(`input[name=question1]:checked`);
-    const question2Checked = game1ScreenElement.querySelector(`input[name=question2]:checked`);
-
-    if (question1Checked && question2Checked) {
-      renderScreen(game2ScreenElement);
-    }
+answersForm.addEventListener(`click`, () => {
+  if ([...questions1].some((item) => item.checked) && [...questions2].some((item) => item.checked)) {
+    renderScreen(game2);
   }
 });
 
 goBackButton.addEventListener(`click`, () => {
-  renderScreen(greetingScreenElement);
+  renderScreen(greeting);
 });
 
-export default game1ScreenElement;
+export default game1;

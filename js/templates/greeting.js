@@ -1,6 +1,6 @@
 import getHtmlElement from '../create-element';
 import renderScreen from '../render-screen';
-import rulesScreenElement from './rules';
+import rules from './rules';
 
 const innerHtml = String.raw`
   <div class="greeting central--blur">
@@ -27,13 +27,11 @@ const innerHtml = String.raw`
     </div>
   </footer>`;
 
-const greetingScreenElement = getHtmlElement(innerHtml);
-const continueButton = greetingScreenElement.querySelector(`.greeting__continue`);
+const greeting = getHtmlElement(innerHtml);
+const continueButton = greeting.querySelector(`.greeting__continue`);
 
 continueButton.addEventListener(`click`, () => {
-  renderScreen(rulesScreenElement);
+  renderScreen(rules);
 });
 
-export default greetingScreenElement;
-
-
+export default greeting;

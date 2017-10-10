@@ -1,6 +1,6 @@
 import getHtmlElement from '../create-element';
 import renderScreen from '../render-screen';
-import greetingScreenElement from './greeting';
+import greeting from './greeting';
 
 const innerHtml = String.raw`
   <header class="header">
@@ -122,11 +122,11 @@ const innerHtml = String.raw`
     </div>
   </footer>`;
 
-const statsScreenElement = getHtmlElement(innerHtml);
-const goBackButton = statsScreenElement.querySelector(`.back`);
+const stats = getHtmlElement(innerHtml);
+const goBackButton = stats.querySelector(`.back`);
 
 goBackButton.addEventListener(`click`, () => {
-  renderScreen(greetingScreenElement);
+  renderScreen(greeting);
 });
 
-export default statsScreenElement;
+export default stats;

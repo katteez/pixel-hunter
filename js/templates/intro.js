@@ -1,6 +1,6 @@
 import getHtmlElement from '../create-element';
 import renderScreen from '../render-screen';
-import greetingScreenElement from './greeting';
+import greeting from './greeting';
 
 const innerHtml = String.raw`
   <div id="main" class="central__content">
@@ -20,13 +20,11 @@ const innerHtml = String.raw`
     </div>
   </footer>`;
 
-const introScreenElement = getHtmlElement(innerHtml);
-const asterisk = introScreenElement.querySelector(`.intro__asterisk`);
+const intro = getHtmlElement(innerHtml);
+const asterisk = intro.querySelector(`.intro__asterisk`);
 
 asterisk.addEventListener(`click`, () => {
-  renderScreen(greetingScreenElement);
+  renderScreen(greeting);
 });
 
-export default introScreenElement;
-
-
+export default intro;

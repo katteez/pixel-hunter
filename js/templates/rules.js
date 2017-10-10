@@ -1,7 +1,7 @@
 import getHtmlElement from '../create-element';
 import renderScreen from '../render-screen';
-import game1ScreenElement from './game-1';
-import greetingScreenElement from './greeting';
+import game1 from './game-1';
+import greeting from './greeting';
 
 const innerHtml = String.raw`
   <header class="header">
@@ -39,25 +39,21 @@ const innerHtml = String.raw`
     </div>
   </footer>`;
 
-const rulesScreenElement = getHtmlElement(innerHtml);
-const playerName = rulesScreenElement.querySelector(`.rules__input`);
-const beginGameButton = rulesScreenElement.querySelector(`.rules__button`);
-const goBackButton = rulesScreenElement.querySelector(`.back`);
+const rules = getHtmlElement(innerHtml);
+const playerName = rules.querySelector(`.rules__input`);
+const beginGameButton = rules.querySelector(`.rules__button`);
+const goBackButton = rules.querySelector(`.back`);
 
 playerName.addEventListener(`input`, (e) => {
-  if (e.target.value) {
-    beginGameButton.disabled = false;
-  } else {
-    beginGameButton.disabled = true;
-  }
+  beginGameButton.disabled = !e.target.value;
 });
 
 beginGameButton.addEventListener(`click`, () => {
-  renderScreen(game1ScreenElement);
+  renderScreen(game1);
 });
 
 goBackButton.addEventListener(`click`, () => {
-  renderScreen(greetingScreenElement);
+  renderScreen(greeting);
 });
 
-export default rulesScreenElement;
+export default rules;
