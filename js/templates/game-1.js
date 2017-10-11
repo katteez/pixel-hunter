@@ -76,8 +76,10 @@ const questions1 = answersForm.querySelectorAll(`input[name=question1]`);
 const questions2 = answersForm.querySelectorAll(`input[name=question2]`);
 const goBackButton = game1.querySelector(`.back`);
 
+const hasChecked = (collection) => [...collection].some((item) => item.checked);
+
 answersForm.addEventListener(`click`, () => {
-  if ([...questions1].some((item) => item.checked) && [...questions2].some((item) => item.checked)) {
+  if (hasChecked(questions1) && hasChecked(questions2)) {
     renderScreen(game2);
   }
 });
