@@ -11,7 +11,7 @@ const SCORES_FOR_ANSWERS = {
 
 const getScore = (answers, remainingLives) => {
 
-  if (!(Array.isArray(answers))) {
+  if (!Array.isArray(answers)) {
     throw new Error(`Not an array`);
   }
 
