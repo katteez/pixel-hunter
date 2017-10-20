@@ -4,29 +4,11 @@ import getTimer from './getTimer';
 describe(`Тестирование функции getTimer().`, () => {
 
   /*
-  * Не все данные получены или данные в неверном формате
+  * Вызов функции с неверным параметром
   */
-  it(`Бросает ошибку, если вызвана без переданного параметра time`, () => {
-    assert.throws(function () {
-      getTimer();
-    }, Error, `Not an integer`);
-  });
-
   it(`Бросает ошибку, если вызвана с неверным типом параметра time`, () => {
     assert.throws(function () {
-      getTimer([]);
-    }, Error, `Not an integer`);
-    assert.throws(function () {
-      getTimer({});
-    }, Error, `Not an integer`);
-    assert.throws(function () {
-      getTimer(`string`);
-    }, Error, `Not an integer`);
-    assert.throws(function () {
       getTimer(10.5);
-    }, Error, `Not an integer`);
-    assert.throws(function () {
-      getTimer(null);
     }, Error, `Not an integer`);
   });
 

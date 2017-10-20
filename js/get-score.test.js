@@ -96,47 +96,18 @@ const allWrongNormalAnswers = Array(10).fill({
 describe(`Тестирование функции getScore().`, () => {
 
   /*
-  * Не все данные получены или данные в неверном формате
+  * Вызов функции с неверными параметрами
   */
-  it(`Бросает ошибку, если вызвана без переданного параметра answers`, () => {
-    assert.throws(function () {
-      getScore(void 0, 3);
-    }, Error, `Not an array`);
-  });
 
   it(`Бросает ошибку, если вызвана с неверным типом параметра answers`, () => {
     assert.throws(function () {
       getScore({}, 3);
     }, Error, `Not an array`);
-    assert.throws(function () {
-      getScore(`string`, 3);
-    }, Error, `Not an array`);
-    assert.throws(function () {
-      getScore(null, 3);
-    }, Error, `Not an array`);
-    assert.throws(function () {
-      getScore(10, 3);
-    }, Error, `Not an array`);
-  });
-
-  it(`Бросает ошибку, если вызвана без переданного параметра remainingLives`, () => {
-    assert.throws(function () {
-      getScore(allNormalAnswers);
-    }, Error, `Not a number`);
   });
 
   it(`Бросает ошибку, если вызвана с неверным типом параметра remainingLives`, () => {
     assert.throws(function () {
-      getScore(allNormalAnswers, []);
-    }, Error, `Not a number`);
-    assert.throws(function () {
-      getScore(allNormalAnswers, {});
-    }, Error, `Not a number`);
-    assert.throws(function () {
       getScore(allNormalAnswers, `string`);
-    }, Error, `Not a number`);
-    assert.throws(function () {
-      getScore(allNormalAnswers, null);
     }, Error, `Not a number`);
   });
 
