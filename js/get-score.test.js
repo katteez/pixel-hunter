@@ -93,7 +93,7 @@ const allWrongNormalAnswers = Array(10).fill({
   answerRate: `normal`
 });
 
-describe(`Тестирование функции getScore().`, () => {
+describe(`Подсчет очков.`, () => {
 
   /*
   * Вызов функции с неверными параметрами
