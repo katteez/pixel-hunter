@@ -1,26 +1,23 @@
 import assert from 'assert';
 import getTimer from './getTimer';
 
-describe(`Test getTimer().`, () => {
+describe(`Тестирование функции getTimer().`, () => {
 
   /*
   * Не все данные получены или данные в неверном формате
   */
-  it(`В таймер не передано время`, () => {
+  it(`Бросает ошибку, если вызвана без переданного параметра time`, () => {
     assert.throws(function () {
       getTimer();
     }, Error, `Not an integer`);
   });
 
-  it(`Тип полученного времени не целое число`, () => {
+  it(`Бросает ошибку, если вызвана с неверным типом параметра time`, () => {
     assert.throws(function () {
       getTimer([]);
     }, Error, `Not an integer`);
     assert.throws(function () {
       getTimer({});
-    }, Error, `Not an integer`);
-    assert.throws(function () {
-      getTimer(`3`);
     }, Error, `Not an integer`);
     assert.throws(function () {
       getTimer(`string`);
@@ -33,7 +30,7 @@ describe(`Test getTimer().`, () => {
     }, Error, `Not an integer`);
   });
 
-  it(`В таймер передано отрицательное значение`, () => {
+  it(`Бросает ошибку, если вызвана с отрицательным значением`, () => {
     assert.throws(function () {
       getTimer(-1);
     }, Error, `Passed argument is negative value`);
@@ -42,19 +39,28 @@ describe(`Test getTimer().`, () => {
   /*
   * Таймер создан. Проверка его работы
   */
-  it(`Создан таймер с установленным временем`, () => {
+  it(`Если вызвана со временем 30, возвращает объект с ключом value, равным 30,`, () => {
     assert.equal(getTimer(30).value, 30);
   });
 
-  it(`При каждом обновлении таймера время уменьшается на единицу`, () => {
-    assert.equal(getTimer(30).tick(), 29);
+  it(`Если вызвана со временем 30, возвращает объект с методом tick(), при одном вызове которого возвращается 29, при втором - 28`, () => {
+    const timer = getTimer(30);
+    assert.equal(timer.tick(), 29);
+    assert.equal(timer.tick(), 28);
   });
 
-  it(`При достижении конца таймер сообщает, что он закончен`, () => {
+  it(`Если вызвана со временем 1, возвращает объект с методом tick(), при одном вызове которого возвращается строка \`Time is up\``, () => {
     assert.equal(getTimer(1).tick(), `Time is up`);
   });
 
-  it(`Если передано конечное значение, таймер сообщает, что он закончен`, () => {
+  it(`Если вызвана со временем 0, возвращает объект с методом tick(), при одном вызове которого возвращается строка \`Time is up\``, () => {
     assert.equal(getTimer(0).tick(), `Time is up`);
+  });
+
+  it(`Если вызвана со временем 1, возвращает объект с методом tick(), при трех вызовах которого возвращается строка \`Time is up\``, () => {
+    const timer = getTimer(1);
+    assert.equal(timer.tick(), `Time is up`);
+    assert.equal(timer.tick(), `Time is up`);
+    assert.equal(timer.tick(), `Time is up`);
   });
 });

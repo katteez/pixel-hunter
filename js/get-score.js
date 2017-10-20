@@ -2,8 +2,9 @@ const QUESTIONS_COUNT = 10;
 const LIVES_COUNT = 3;
 const MIN_CORRECT_ANSWERS = QUESTIONS_COUNT - LIVES_COUNT;
 const SCORES_FOR_LIVES = 50;
+const CORRECT_ANSWER_SCORES = 100;
 
-const SCORES_FOR_ANSWERS = {
+const ANSWER_RATE_SCORES = {
   slow: -50,
   normal: 0,
   fast: 50
@@ -45,7 +46,7 @@ const getScore = (answers, remainingLives) => {
 
   const resultScores = answers.reduce((sumScores, currentAnswer) => {
     if (currentAnswer.isCorrect) {
-      sumScores += 100 + SCORES_FOR_ANSWERS[currentAnswer.answerRate];
+      sumScores += CORRECT_ANSWER_SCORES + ANSWER_RATE_SCORES[currentAnswer.answerRate];
     }
     return sumScores;
   }, 0);
