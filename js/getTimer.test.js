@@ -1,7 +1,7 @@
 import assert from 'assert';
 import getTimer from './getTimer';
 
-describe(`Таймер`, () => {
+describe(`Таймер.`, () => {
 
   /*
   * Вызов функции с неверным параметром
