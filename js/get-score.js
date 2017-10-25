@@ -20,7 +20,7 @@ const getScore = (answers, remainingLives) => {
     throw new Error(`Not a number`);
   }
 
-  if (remainingLives < 0) {
+  if (remainingLives < -1) {
     throw new Error(`Reduced the allowed count of lives`);
   }
 
