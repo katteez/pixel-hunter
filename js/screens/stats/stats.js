@@ -124,7 +124,7 @@ export default (gameState) => {
   const stats = getHtmlElement(innerHtml);
   const goBackButton = stats.querySelector(`.back`);
 
-  goBackButton.addEventListener(`click`, () => goBack(gameState));
+  goBackButton.addEventListener(`click`, goBack.bind({}, gameState));
 
   return stats;
 };

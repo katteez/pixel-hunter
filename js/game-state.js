@@ -1,5 +1,5 @@
 export default {
-  time: 25,
+  time: 15,
   lives: 3,
   answers: Array(10).fill(`unknown`),
   questionNumber: 0,

@@ -68,7 +68,7 @@ export default (gameState) => {
     }
   });
 
-  goBackButton.addEventListener(`click`, () => goBack(gameState));
+  goBackButton.addEventListener(`click`, goBack.bind({}, gameState));
 
   return game1;
 };
