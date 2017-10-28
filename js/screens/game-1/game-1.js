@@ -5,7 +5,7 @@ import pictures from '../../pictures';
 import playerAnswers from '../../player-answers';
 import data from './game-1-data';
 import {getUniqueImgArray} from '../../utils';
-import {goBack, getAnswerType, recordAnswer, checkContinue} from '../../game-logic';
+import {resetGame, getAnswerRate, recordAnswer, checkContinue} from '../../game-logic';
 
 const IMG_COUNT = 2;
 let imgArray = getUniqueImgArray(pictures, IMG_COUNT);
@@ -55,20 +55,17 @@ export default (gameState) => {
     if (hasCheckedAnswer(questions1) && hasCheckedAnswer(questions2)) {
       let answerOnQuestion1 = getCheckedAnswer(questions1);
       let answerOnQuestion2 = getCheckedAnswer(questions2);
-      let answerType = getAnswerType(gameState.time);
-      let answerCorrectness = answerOnQuestion1 === imgArray[0].imgType && answerOnQuestion2 === imgArray[1].imgType;
+      let isCorrect = answerOnQuestion1 === imgArray[0].imgType && answerOnQuestion2 === imgArray[1].imgType;
+      let answerRate = getAnswerRate(gameState.time);
 
-      playerAnswers[gameState.questionNumber] = {
-        isCorrect: answerCorrectness,
-        answerRate: answerType
-      };
+      playerAnswers[gameState.questionNumber] = {isCorrect, answerRate};
 
-      recordAnswer(answerCorrectness, answerType, gameState);
+      recordAnswer(isCorrect, answerRate, gameState);
       checkContinue(gameState, data);
     }
   });
 
-  goBackButton.addEventListener(`click`, goBack.bind({}, gameState));
+  goBackButton.addEventListener(`click`, resetGame.bind(null, gameState));
 
   return game1;
 };

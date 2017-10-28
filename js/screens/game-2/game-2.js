@@ -5,7 +5,7 @@ import pictures from '../../pictures';
 import playerAnswers from '../../player-answers';
 import data from './game-2-data';
 import {getRandomFromInterval} from '../../utils';
-import {goBack, getAnswerType, recordAnswer, checkContinue} from '../../game-logic';
+import {resetGame, getAnswerRate, recordAnswer, checkContinue} from '../../game-logic';
 
 let img = pictures[getRandomFromInterval(0, pictures.length)];
 
@@ -41,20 +41,17 @@ export default (gameState) => {
   answersForm.addEventListener(`click`, () => {
     if (hasCheckedAnswer(questions1)) {
       let answerOnQuestion1 = getCheckedAnswer(questions1);
-      let answerType = getAnswerType(gameState.time);
-      let answerCorrectness = answerOnQuestion1 === img.imgType;
+      let isCorrect = answerOnQuestion1 === img.imgType;
+      let answerRate = getAnswerRate(gameState.time);
 
-      playerAnswers[gameState.questionNumber] = {
-        isCorrect: answerCorrectness,
-        answerRate: answerType
-      };
+      playerAnswers[gameState.questionNumber] = {isCorrect, answerRate};
 
-      recordAnswer(answerCorrectness, answerType, gameState);
+      recordAnswer(isCorrect, answerRate, gameState);
       checkContinue(gameState, data);
     }
   });
 
-  goBackButton.addEventListener(`click`, goBack.bind({}, gameState));
+  goBackButton.addEventListener(`click`, resetGame.bind(null, gameState));
 
   return game2;
 };

@@ -2,7 +2,7 @@ import renderScreen from './render-screen';
 import greeting from './screens/greeting/greeting';
 import game1 from './screens/game-1/game-1';
 
-const goBack = (gameState) => {
+const resetGame = (gameState) => {
   if (gameState) {
     gameState.time = 15;
     gameState.lives = 3;
@@ -13,30 +13,30 @@ const goBack = (gameState) => {
   renderScreen(greeting);
 };
 
-const getAnswerType = (answerTime) => {
-  let answerType;
+const getAnswerRate = (answerTime) => {
+  let answerRate;
   if (answerTime < 10) {
-    answerType = `fast`;
+    answerRate = `fast`;
   } else if (answerTime <= 20) {
-    answerType = `normal`;
+    answerRate = `normal`;
   } else {
-    answerType = `slow`;
+    answerRate = `slow`;
   }
-  return answerType;
+  return answerRate;
 };
 
-const recordAnswer = (answerCorrectness, answerType, gameState) => {
-  if (answerCorrectness) {
-    if (answerType === `normal`) {
+const recordAnswer = (isCorrect, answerRate, gameState) => {
+  if (isCorrect) {
+    if (answerRate === `normal`) {
       gameState.answers[gameState.questionNumber] = `correct`;
     } else {
-      gameState.answers[gameState.questionNumber] = answerType;
+      gameState.answers[gameState.questionNumber] = answerRate;
     }
   } else {
     gameState.answers[gameState.questionNumber] = `wrong`;
     gameState.lives--;
   }
-  gameState.questionNumber += 1;
+  gameState.questionNumber++;
 };
 
 const checkContinue = (gameState, data) => {
@@ -55,4 +55,4 @@ const checkContinue = (gameState, data) => {
   }
 };
 
-export {goBack, getAnswerType, recordAnswer, checkContinue};
+export {resetGame, getAnswerRate, recordAnswer, checkContinue};

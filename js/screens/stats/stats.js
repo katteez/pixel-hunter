@@ -3,7 +3,7 @@ import headerBack from '../header/header-back';
 import playerAnswers from '../../player-answers';
 import data from './stats-data';
 import getScore from '../../get-score';
-import {goBack} from '../../game-logic';
+import {resetGame} from '../../game-logic';
 
 export default (gameState) => {
   let title;
@@ -124,7 +124,7 @@ export default (gameState) => {
   const stats = getHtmlElement(innerHtml);
   const goBackButton = stats.querySelector(`.back`);
 
-  goBackButton.addEventListener(`click`, goBack.bind({}, gameState));
+  goBackButton.addEventListener(`click`, resetGame.bind(null, gameState));
 
   return stats;
 };

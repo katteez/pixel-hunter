@@ -3,7 +3,7 @@ import headerBack from '../header/header-back';
 import gameState from '../../game-state';
 import data from './rules-data';
 import renderScreen from '../../render-screen';
-import {goBack} from '../../game-logic';
+import {resetGame} from '../../game-logic';
 
 const innerHtml = String.raw`
   ${headerBack}
@@ -29,6 +29,6 @@ beginGameButton.addEventListener(`click`, () => {
   renderScreen(data.nextScreen(gameState));
 });
 
-goBackButton.addEventListener(`click`, goBack);
+goBackButton.addEventListener(`click`, resetGame);
 
 export default rules;

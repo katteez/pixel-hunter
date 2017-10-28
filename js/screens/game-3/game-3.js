@@ -5,7 +5,7 @@ import pictures from '../../pictures';
 import playerAnswers from '../../player-answers';
 import data from './game-3-data';
 import {getUniqueImgArray} from '../../utils';
-import {goBack, getAnswerType, recordAnswer, checkContinue} from '../../game-logic';
+import {resetGame, getAnswerRate, recordAnswer, checkContinue} from '../../game-logic';
 
 const RIGHT_IMG_TYPE = `paint`;
 const IMG_COUNT = 3;
@@ -39,20 +39,17 @@ export default (gameState) => {
   answersForm.addEventListener(`click`, (e) => {
     if (e.target.classList.contains(`game__option`)) {
       let answerIndex = imgSrcArray.indexOf(e.target.children[0].src);
-      let answerType = getAnswerType(gameState.time);
-      let answerCorrectness = imgArray[answerIndex].imgType === RIGHT_IMG_TYPE;
+      let isCorrect = imgArray[answerIndex].imgType === RIGHT_IMG_TYPE;
+      let answerRate = getAnswerRate(gameState.time);
 
-      playerAnswers[gameState.questionNumber] = {
-        isCorrect: answerCorrectness,
-        answerRate: answerType
-      };
+      playerAnswers[gameState.questionNumber] = {isCorrect, answerRate};
 
-      recordAnswer(answerCorrectness, answerType, gameState);
+      recordAnswer(isCorrect, answerRate, gameState);
       checkContinue(gameState, data);
     }
   });
 
-  goBackButton.addEventListener(`click`, goBack.bind({}, gameState));
+  goBackButton.addEventListener(`click`, resetGame.bind(null, gameState));
 
   return game3;
 };
