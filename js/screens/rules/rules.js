@@ -2,6 +2,8 @@ import getHtmlElement from '../../create-element';
 import headerBack from '../header/header-back';
 import gameState from '../../game-state';
 import data from './rules-data';
+import gameData from '../games/gameData';
+import game1 from '../games/game-1';
 import renderScreen from '../../render-screen';
 import {resetGame} from '../../game-logic';
 
@@ -26,7 +28,7 @@ playerName.addEventListener(`input`, (e) => {
 });
 
 beginGameButton.addEventListener(`click`, () => {
-  renderScreen(data.nextScreen(gameState));
+  renderScreen(game1(gameData[0], gameState));
 });
 
 goBackButton.addEventListener(`click`, resetGame);

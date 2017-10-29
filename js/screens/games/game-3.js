@@ -3,7 +3,6 @@ import getHeader from '../header/header';
 import statsBar from '../stats-bar';
 import pictures from '../../pictures';
 import playerAnswers from '../../player-answers';
-import data from './game-3-data';
 import {getUniqueImgArray} from '../../utils';
 import {resetGame, getAnswerRate, recordAnswer, checkContinue} from '../../game-logic';
 
@@ -11,7 +10,7 @@ const RIGHT_IMG_TYPE = `paint`;
 const IMG_COUNT = 3;
 let imgArray = getUniqueImgArray(pictures, IMG_COUNT);
 
-export default (gameState) => {
+export default (data, gameState) => {
   const innerHTML = String.raw`
   ${getHeader(gameState)}
   <div class="game">
@@ -27,7 +26,9 @@ export default (gameState) => {
         <img src="${imgArray[2].imgSrc}" alt="Option 1">
       </div>
     </form>
-    ${statsBar(gameState)}
+    <div class="stats">
+      ${statsBar(gameState)}
+    </div>
   </div>`;
 
   const game3 = getHtmlElement(innerHTML);
@@ -45,11 +46,11 @@ export default (gameState) => {
       playerAnswers[gameState.questionNumber] = {isCorrect, answerRate};
 
       recordAnswer(isCorrect, answerRate, gameState);
-      checkContinue(gameState, data);
+      checkContinue(gameState, data.type);
     }
   });
 
-  goBackButton.addEventListener(`click`, resetGame.bind(null, gameState));
+  goBackButton.addEventListener(`click`, () => resetGame(gameState));
 
   return game3;
 };

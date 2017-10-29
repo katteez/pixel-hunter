@@ -1,5 +1,3 @@
-import game1 from '../game-1/game-1';
-
 export default {
   title: `Правила`,
   text: `Угадай 10 раз для каждого изображения фото <img
@@ -9,6 +7,5 @@ export default {
       На каждую попытку отводится 30 секунд.<br>
       Ошибиться можно не более 3 раз.<br>
       <br>
-      Готовы?`,
-  nextScreen: game1,
+      Готовы?`
 };

@@ -1,6 +1,10 @@
 import renderScreen from './render-screen';
 import greeting from './screens/greeting/greeting';
-import game1 from './screens/game-1/game-1';
+import gameData from './screens/games/gameData';
+import game1 from './screens/games/game-1';
+import game2 from './screens/games/game-2';
+import game3 from './screens/games/game-3';
+import stats from './screens/stats/stats';
 
 const resetGame = (gameState) => {
   if (gameState) {
@@ -27,11 +31,7 @@ const getAnswerRate = (answerTime) => {
 
 const recordAnswer = (isCorrect, answerRate, gameState) => {
   if (isCorrect) {
-    if (answerRate === `normal`) {
-      gameState.answers[gameState.questionNumber] = `correct`;
-    } else {
-      gameState.answers[gameState.questionNumber] = answerRate;
-    }
+    gameState.answers[gameState.questionNumber] = answerRate;
   } else {
     gameState.answers[gameState.questionNumber] = `wrong`;
     gameState.lives--;
@@ -39,18 +39,24 @@ const recordAnswer = (isCorrect, answerRate, gameState) => {
   gameState.questionNumber++;
 };
 
-const checkContinue = (gameState, data) => {
+const checkContinue = (gameState, questionType) => {
   if (gameState.lives < 0) {
     gameState.win = false;
-    renderScreen(data.endScreen(gameState));
+    renderScreen(stats(gameState));
   } else if (gameState.questionNumber === 10) {
     gameState.win = true;
-    renderScreen(data.endScreen(gameState));
+    renderScreen(stats(gameState));
   } else {
-    if (!data.nextScreen) { // вместо этого if/else должна быть только строчка 59, но с 3го экрана в data.nextScreen приходит undefined. Не пойму почему.
-      renderScreen(game1(gameState));
-    } else {
-      renderScreen(data.nextScreen(gameState));
+    switch (questionType) {
+      case `game1`:
+        renderScreen(game2(gameData[1], gameState));
+        break;
+      case `game2`:
+        renderScreen(game3(gameData[2], gameState));
+        break;
+      case `game3`:
+        renderScreen(game1(gameData[0], gameState));
+        break;
     }
   }
 };

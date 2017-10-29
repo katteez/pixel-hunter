@@ -1,5 +1,6 @@
 import getHtmlElement from '../../create-element';
 import headerBack from '../header/header-back';
+import statsBar from '../stats-bar';
 import playerAnswers from '../../player-answers';
 import data from './stats-data';
 import getScore from '../../get-score';
@@ -108,9 +109,7 @@ export default (gameState) => {
       <tr>
         <td class="result__number">1.</td>
         <td colspan="2">
-          <ul class="stats">
-            ${gameState.answers.map((answerType) => `<li class="stats__result stats__result--${answerType}"></li>`).join(``)}
-          </ul>
+          ${statsBar(gameState)}
         </td>
         ${templateCorrectScores}
       </tr>
@@ -124,7 +123,7 @@ export default (gameState) => {
   const stats = getHtmlElement(innerHtml);
   const goBackButton = stats.querySelector(`.back`);
 
-  goBackButton.addEventListener(`click`, resetGame.bind(null, gameState));
+  goBackButton.addEventListener(`click`, () => resetGame(gameState));
 
   return stats;
 };

@@ -3,13 +3,12 @@ import getHeader from '../header/header';
 import statsBar from '../stats-bar';
 import pictures from '../../pictures';
 import playerAnswers from '../../player-answers';
-import data from './game-2-data';
 import {getRandomFromInterval} from '../../utils';
 import {resetGame, getAnswerRate, recordAnswer, checkContinue} from '../../game-logic';
 
 let img = pictures[getRandomFromInterval(0, pictures.length)];
 
-export default (gameState) => {
+export default (data, gameState) => {
   const innerHTML = String.raw`
   ${getHeader(gameState)}
   <div class="game">
@@ -27,7 +26,9 @@ export default (gameState) => {
         </label>
       </div>
     </form>
-    ${statsBar(gameState)}
+    <div class="stats">
+      ${statsBar(gameState)}
+    </div>
   </div>`;
 
   const game2 = getHtmlElement(innerHTML);
@@ -47,11 +48,11 @@ export default (gameState) => {
       playerAnswers[gameState.questionNumber] = {isCorrect, answerRate};
 
       recordAnswer(isCorrect, answerRate, gameState);
-      checkContinue(gameState, data);
+      checkContinue(gameState, data.type);
     }
   });
 
-  goBackButton.addEventListener(`click`, resetGame.bind(null, gameState));
+  goBackButton.addEventListener(`click`, () => resetGame(gameState));
 
   return game2;
 };
