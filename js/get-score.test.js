@@ -172,10 +172,10 @@ describe(`Подсчет очков.`, () => {
     assert.equal(getScore(allWrongNormalAnswers, 3), -1);
   });
 
-  it(`Возвращает -1, если вызвана с 10 правильными нормальными ответами и -1 жизнью`, () => {
+  it(`Бросает ошибку, если вызвана с 10 правильными нормальными ответами и -2 жизнью`, () => {
     assert.throws(function () {
-      getScore(allNormalAnswers, -1);
-    }, Error, `Decreased the allowed count of lives`);
+      getScore(allNormalAnswers, -2);
+    }, Error, `Reduced the allowed count of lives`);
   });
 
   it(`Бросает ошибку, если вызвана с 10 нормальными ответами и 4 жизнями`, () => {
