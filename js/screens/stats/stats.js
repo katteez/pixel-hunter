@@ -6,8 +6,7 @@ import getScore from '../../get-score';
 import {resetGame} from '../../game-logic';
 
 export default (gameState) => {
-  let title;
-  title = (gameState.win) ? `Победа!` : `Проигрыш`;
+  let title = (gameState.win) ? `Победа!` : `Проигрыш`;
 
   const correctAnswersCount = gameState.answers.filter((answer) => answer !== `wrong` && answer !== `unknown`).length;
   const correctnessBonuses = correctAnswersCount * data.correctAnswerScores;
