@@ -2,13 +2,12 @@ import getHtmlElement from '../../create-element';
 import getHeader from '../header/header';
 import statsBar from '../stats-bar';
 import pictures from '../../pictures';
-import playerAnswers from '../../player-answers';
 import {getRandomFromInterval} from '../../utils';
 import {resetGame, getAnswerRate, recordAnswer, checkContinue} from '../../game-logic';
 
-let img = pictures[getRandomFromInterval(0, pictures.length)];
-
 export default (data, gameState) => {
+  let img = pictures[getRandomFromInterval(0, pictures.length)];
+
   const innerHTML = String.raw`
   ${getHeader(gameState)}
   <div class="game">
@@ -44,8 +43,6 @@ export default (data, gameState) => {
       let answerOnQuestion1 = getCheckedAnswer(questions1);
       let isCorrect = answerOnQuestion1 === img.imgType;
       let answerRate = getAnswerRate(gameState.time);
-
-      playerAnswers[gameState.questionNumber] = {isCorrect, answerRate};
 
       recordAnswer(isCorrect, answerRate, gameState);
       checkContinue(gameState, data.type);

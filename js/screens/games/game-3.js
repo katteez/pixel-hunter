@@ -2,15 +2,15 @@ import getHtmlElement from '../../create-element';
 import getHeader from '../header/header';
 import statsBar from '../stats-bar';
 import pictures from '../../pictures';
-import playerAnswers from '../../player-answers';
 import {getUniqueImgArray} from '../../utils';
 import {resetGame, getAnswerRate, recordAnswer, checkContinue} from '../../game-logic';
 
 const RIGHT_IMG_TYPE = `paint`;
 const IMG_COUNT = 3;
-let imgArray = getUniqueImgArray(pictures, IMG_COUNT);
 
 export default (data, gameState) => {
+  let imgArray = getUniqueImgArray(pictures, IMG_COUNT);
+
   const innerHTML = String.raw`
   ${getHeader(gameState)}
   <div class="game">
@@ -42,8 +42,6 @@ export default (data, gameState) => {
       let answerIndex = imgSrcArray.indexOf(e.target.children[0].src);
       let isCorrect = imgArray[answerIndex].imgType === RIGHT_IMG_TYPE;
       let answerRate = getAnswerRate(gameState.time);
-
-      playerAnswers[gameState.questionNumber] = {isCorrect, answerRate};
 
       recordAnswer(isCorrect, answerRate, gameState);
       checkContinue(gameState, data.type);

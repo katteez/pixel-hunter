@@ -1,5 +1,3 @@
-import getHtmlElement from '../create-element';
-
 const innerHtml = String.raw`  
   <footer class="footer">
     <a href="https://htmlacademy.ru" class="social-link social-link--academy">HTML Academy</a>
@@ -12,6 +10,4 @@ const innerHtml = String.raw`
     </div>
   </footer>`;
 
-const footer = getHtmlElement(innerHtml);
-
-export default footer;
+export default innerHtml;

@@ -1,18 +1,13 @@
 import getHtmlElement from '../../create-element';
 import headerBack from '../header/header-back';
 import statsBar from '../stats-bar';
-import playerAnswers from '../../player-answers';
 import data from './stats-data';
 import getScore from '../../get-score';
 import {resetGame} from '../../game-logic';
 
 export default (gameState) => {
   let title;
-  if (gameState.win) {
-    title = `Победа!`;
-  } else {
-    title = `Проигрыш`;
-  }
+  title = (gameState.win) ? `Победа!` : `Проигрыш`;
 
   const correctAnswersCount = gameState.answers.filter((answer) => answer !== `wrong` && answer !== `unknown`).length;
   const correctnessBonuses = correctAnswersCount * data.correctAnswerScores;
@@ -97,7 +92,7 @@ export default (gameState) => {
   if (gameState.win) {
     templateTotalScore = String.raw`
     <tr>
-      <td colspan="5" class="result__total  result__total--final">${getScore(playerAnswers, gameState.lives)}</td>
+      <td colspan="5" class="result__total  result__total--final">${getScore(data.playerAnswers, gameState.lives)}</td>
     </tr>`;
   }
 

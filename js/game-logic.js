@@ -1,10 +1,11 @@
 import renderScreen from './render-screen';
 import greeting from './screens/greeting/greeting';
-import gameData from './screens/games/gameData';
 import game1 from './screens/games/game-1';
 import game2 from './screens/games/game-2';
 import game3 from './screens/games/game-3';
 import stats from './screens/stats/stats';
+import gameData from './screens/games/gameData';
+import statsData from './screens/stats/stats-data';
 
 const resetGame = (gameState) => {
   if (gameState) {
@@ -30,6 +31,8 @@ const getAnswerRate = (answerTime) => {
 };
 
 const recordAnswer = (isCorrect, answerRate, gameState) => {
+  statsData.playerAnswers[gameState.questionNumber] = {isCorrect, answerRate};
+
   if (isCorrect) {
     gameState.answers[gameState.questionNumber] = answerRate;
   } else {
