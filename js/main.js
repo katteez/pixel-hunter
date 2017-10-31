@@ -1,6 +1,6 @@
 import renderScreen from './render-screen';
 import intro from './screens/intro/intro';
-import footer from './screens/footer';
+import footer from './screens/footer/footer';
 
 const mainElement = document.querySelector(`.central`);
 

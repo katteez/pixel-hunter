@@ -1,36 +1,19 @@
-import getHtmlElement from '../../create-element';
-import headerBack from '../header/header-back';
-import gameState from '../../game-state';
+import RulesView from './rules-view';
 import data from './rules-data';
 import gameData from '../games/gameData';
+import gameState from '../../game-state';
 import game1 from '../games/game-1';
 import renderScreen from '../../render-screen';
 import {resetGame} from '../../game-logic';
 
-const innerHtml = String.raw`
-  ${headerBack}
-  <div class="rules">
-    <h1 class="rules__title">${data.title}</h1>
-    <p class="rules__description">${data.text}</p>
-    <form class="rules__form">
-      <input class="rules__input" type="text" placeholder="Ваше Имя">
-      <button class="rules__button  continue" type="submit" disabled>Go!</button>
-    </form>
-  </div>`;
+const rulesScreen = new RulesView(data.title, data.text);
 
-const rules = getHtmlElement(innerHtml);
-const playerName = rules.querySelector(`.rules__input`);
-const beginGameButton = rules.querySelector(`.rules__button`);
-const goBackButton = rules.querySelector(`.back`);
+rulesScreen.onInputChange = (target, buttonSubmit) => {
+  buttonSubmit.disabled = !target.value;
+};
 
-playerName.addEventListener(`input`, (e) => {
-  beginGameButton.disabled = !e.target.value;
-});
+rulesScreen.onFormSubmit = () => renderScreen(game1(gameData[0], gameState));
 
-beginGameButton.addEventListener(`click`, () => {
-  renderScreen(game1(gameData[0], gameState));
-});
+rulesScreen.onBackButtonClick = resetGame;
 
-goBackButton.addEventListener(`click`, resetGame);
-
-export default rules;
+export default rulesScreen.element;

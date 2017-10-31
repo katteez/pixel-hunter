@@ -8,5 +8,5 @@ const classFromRate = {
 
 export default (gameState) => String.raw `
   <ul class="stats">
-    ${gameState.answers.map((answerRate) => `<li class="stats__result stats__result--${classFromRate[answerRate]}"></li>`).join(``)}      
+    ${gameState.answers.map((answerRate) => `<li class="stats__result stats__result--${classFromRate[answerRate]}"></li>`).join(``)}
   </ul>`;
