@@ -26,7 +26,7 @@ export default class StatsView extends AbstractView {
   */
   _templateCorrectScores(gameState, correctAnswerScores, correctScoresTotal) {
     if (gameState.win) {
-      return String.raw`
+      return `
       <td class="result__points">×&nbsp;${correctAnswerScores}</td>
       <td class="result__total">${correctScoresTotal}</td>`;
     } else {
@@ -41,7 +41,7 @@ export default class StatsView extends AbstractView {
   */
   _templateFast(gameState, fastAnswersCount, fastBonuses, fastBonusesTotal) {
     if (gameState.win && fastAnswersCount) {
-      return String.raw`
+      return `
       <tr>
         <td></td>
         <td class="result__extra">Бонус за скорость:</td>
@@ -59,7 +59,7 @@ export default class StatsView extends AbstractView {
   */
   _templateLives(gameState, lives, livesBonuses, livesBonusesTotal) {
     if (gameState.win && lives) {
-      return String.raw`
+      return `
       <tr>
         <td></td>
         <td class="result__extra">Бонус за жизни:</td>
@@ -77,7 +77,7 @@ export default class StatsView extends AbstractView {
   */
   _templateSlow(gameState, slowAnswersCount, slowBonuses, slowBonusesTotal) {
     if (gameState.win && slowAnswersCount) {
-      return String.raw`
+      return `
       <tr>
         <td></td>
         <td class="result__extra">Штраф за медлительность:</td>
@@ -95,7 +95,7 @@ export default class StatsView extends AbstractView {
   */
   _templateTotalScore(gameState, totalScores) {
     if (gameState.win) {
-      return String.raw`
+      return `
       <tr>
         <td colspan="5" class="result__total  result__total--final">${totalScores}</td>
       </tr>`;

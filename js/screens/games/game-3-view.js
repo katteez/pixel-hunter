@@ -38,6 +38,7 @@ export default class Game3View extends AbstractView {
   bind() {
     const answersForm = this.element.querySelector(`.game__content`);
     const goBackButton = this.element.querySelector(`.back`);
+    this.timerElement = this.element.querySelector(`.game__timer`);
 
     answersForm.addEventListener(`click`, (e) => this.onFormClick(e));
     goBackButton.addEventListener(`click`, this.onBackButtonClick);
@@ -46,4 +47,8 @@ export default class Game3View extends AbstractView {
   onFormClick() {}
 
   onBackButtonClick() {}
+
+  updateTime(time) {
+    this.timerElement.textContent = time;
+  }
 }

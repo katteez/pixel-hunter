@@ -1,7 +1,6 @@
 import StatsView from './stats-view';
 import statsBar from '../stats-bar';
 import data from './stats-data';
-
 import getScore from '../../get-score';
 import {resetGame} from '../../game-logic';
 

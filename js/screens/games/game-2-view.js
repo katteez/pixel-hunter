@@ -39,6 +39,7 @@ export default class Game2View extends AbstractView {
     const answersForm = this.element.querySelector(`.game__content`);
     const questions1 = answersForm.querySelectorAll(`input[name=question1]`);
     const goBackButton = this.element.querySelector(`.back`);
+    this.timerElement = this.element.querySelector(`.game__timer`);
 
     answersForm.addEventListener(`click`, () => this.onFormClick(questions1, this.img.imgType));
     goBackButton.addEventListener(`click`, this.onBackButtonClick);
@@ -47,4 +48,8 @@ export default class Game2View extends AbstractView {
   onFormClick() {}
 
   onBackButtonClick() {}
+
+  updateTime(time) {
+    this.timerElement.textContent = time;
+  }
 }

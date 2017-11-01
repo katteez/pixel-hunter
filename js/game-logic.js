@@ -6,11 +6,15 @@ import game3 from './screens/games/game-3';
 import stats from './screens/stats/stats';
 import gameData from './screens/games/gameData';
 import statsData from './screens/stats/stats-data';
+import getTimer from './get-timer';
+
+const INIT_TIME = 30;
+const INIT_LIVES = 3;
 
 const resetGame = (gameState) => {
   if (gameState) {
-    gameState.time = 15;
-    gameState.lives = 3;
+    gameState.time = INIT_TIME;
+    gameState.lives = INIT_LIVES;
     gameState.answers = Array(10).fill(`unknown`);
     gameState.questionNumber = 0;
     gameState.win = false;
@@ -20,9 +24,9 @@ const resetGame = (gameState) => {
 
 const getAnswerRate = (answerTime) => {
   let answerRate;
-  if (answerTime < 10) {
+  if (answerTime > 20) {
     answerRate = `fast`;
-  } else if (answerTime <= 20) {
+  } else if (answerTime >= 10) {
     answerRate = `normal`;
   } else {
     answerRate = `slow`;
@@ -31,13 +35,20 @@ const getAnswerRate = (answerTime) => {
 };
 
 const recordAnswer = (isCorrect, answerRate, gameState) => {
-  statsData.playerAnswers[gameState.questionNumber] = {isCorrect, answerRate};
+  if (answerRate !== `unknown`) {
+    statsData.playerAnswers[gameState.questionNumber] = {isCorrect, answerRate};
+  }
 
   if (isCorrect) {
     gameState.answers[gameState.questionNumber] = answerRate;
   } else {
-    gameState.answers[gameState.questionNumber] = `wrong`;
     gameState.lives--;
+
+    if (answerRate === `unknown`) {
+      gameState.answers[gameState.questionNumber] = answerRate;
+    } else {
+      gameState.answers[gameState.questionNumber] = `wrong`;
+    }
   }
   gameState.questionNumber++;
 };
@@ -50,6 +61,8 @@ const checkContinue = (gameState, questionType) => {
     gameState.win = true;
     renderScreen(stats(gameState));
   } else {
+    gameState.time = INIT_TIME;
+
     switch (questionType) {
       case `game1`:
         renderScreen(game2(gameData[1], gameState));
@@ -64,4 +77,23 @@ const checkContinue = (gameState, questionType) => {
   }
 };
 
-export {resetGame, getAnswerRate, recordAnswer, checkContinue};
+const startTimer = (gameState, gameScreen, questionType) => {
+  let timeoutHolder = {};
+
+  const goTimer = () => {
+    const timer = getTimer(gameState.time);
+    gameState.time = timer.tick();
+    gameScreen.updateTime(gameState.time);
+    if (gameState.time > 0) {
+      timeoutHolder.value = setTimeout(goTimer, 1000);
+    } else {
+      recordAnswer(false, `unknown`, gameState);
+      checkContinue(gameState, questionType);
+    }
+  };
+
+  timeoutHolder.value = setTimeout(goTimer, 1000);
+  return timeoutHolder;
+};
+
+export {resetGame, getAnswerRate, recordAnswer, checkContinue, startTimer};

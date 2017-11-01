@@ -1,5 +1,5 @@
 import assert from 'assert';
-import getTimer from './getTimer';
+import getTimer from './get-timer';
 
 describe(`Таймер.`, () => {
 
