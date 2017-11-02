@@ -1,15 +1,28 @@
-import {resetGame, recordAnswer, checkContinue, startTimer} from '../../game-logic';
+import getTimer from '../../get-timer';
+import {resetGame, recordAnswer, checkContinue} from '../../game-logic';
 
 export default (gameState, gameScreen, questionType) => {
-  const timerTask = startTimer(gameState, gameScreen, questionType);
+  const timer = getTimer(gameState.time);
+
+  timer.onUpdate((time) => {
+    gameState.time = time;
+    gameScreen.updateTime(time);
+  });
+
+  timer.onEnd(() => {
+    recordAnswer(false, `unknown`, gameState);
+    checkContinue(gameState, questionType);
+  });
+
+  timer.start();
 
   gameScreen.header.onBackButtonClick = () => {
-    timerTask.stop();
+    timer.stop();
     resetGame(gameState);
   };
 
   gameScreen.continueGame = (isCorrect, answerRate) => {
-    timerTask.stop();
+    timer.stop();
     recordAnswer(isCorrect, answerRate, gameState);
     checkContinue(gameState, questionType);
   };
