@@ -1,9 +1,7 @@
-import renderScreen from './render-screen';
-import intro from './screens/intro/intro';
-import footer from './screens/footer/index';
+import App from './application';
+import footer from './screens/footer';
+
+App.showIntro();
 
 const mainElement = document.querySelector(`.central`);
-
-renderScreen(intro);
-
-mainElement.insertAdjacentElement(`afterEnd`, footer);
+mainElement.insertAdjacentHTML(`afterEnd`, footer);

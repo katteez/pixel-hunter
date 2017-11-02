@@ -1,10 +1,4 @@
-import renderScreen from './render-screen';
-import greeting from './screens/greeting/greeting';
-import game1 from './screens/games/game-1';
-import game2 from './screens/games/game-2';
-import game3 from './screens/games/game-3';
-import stats from './screens/stats/stats';
-import gameData from './screens/games/gameData';
+import App from './application';
 import statsData from './screens/stats/stats-data';
 import getTimer from './get-timer';
 
@@ -19,7 +13,7 @@ const resetGame = (gameState) => {
     gameState.questionNumber = 0;
     gameState.win = false;
   }
-  renderScreen(greeting);
+  App.showGreeting();
 };
 
 const getAnswerRate = (answerTime) => {
@@ -56,28 +50,28 @@ const recordAnswer = (isCorrect, answerRate, gameState) => {
 const checkContinue = (gameState, questionType) => {
   if (gameState.lives < 0) {
     gameState.win = false;
-    renderScreen(stats(gameState));
+    App.showStats(gameState);
   } else if (gameState.questionNumber === 10) {
     gameState.win = true;
-    renderScreen(stats(gameState));
+    App.showStats(gameState);
   } else {
     gameState.time = INIT_TIME;
 
     switch (questionType) {
       case `game1`:
-        renderScreen(game2(gameData[1], gameState));
+        App.showGame2(gameState);
         break;
       case `game2`:
-        renderScreen(game3(gameData[2], gameState));
+        App.showGame3(gameState);
         break;
       case `game3`:
-        renderScreen(game1(gameData[0], gameState));
+        App.showGame1(gameState);
         break;
     }
   }
 };
 
-const startTimer = (gameState, gameScreen, questionType) => {
+const startTimer = (gameState, gameView) => {
   const timerTask = {
     _timeoutId: null,
     stop() {
@@ -91,12 +85,12 @@ const startTimer = (gameState, gameScreen, questionType) => {
   const goTimer = () => {
     const timer = getTimer(gameState.time);
     gameState.time = timer.tick();
-    gameScreen.updateTime(gameState.time);
+    gameView.updateTime(gameState.time);
     if (gameState.time > 0) {
       timerTask._timeoutId = setTimeout(goTimer, 1000);
     } else {
       recordAnswer(false, `unknown`, gameState);
-      checkContinue(gameState, questionType);
+      checkContinue(gameState, gameView.questionType);
     }
   };
 

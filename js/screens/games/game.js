@@ -1,18 +1,28 @@
 import {resetGame, recordAnswer, checkContinue, startTimer} from '../../game-logic';
+import renderScreen from '../../render-screen';
 
-export default (gameState, gameScreen, questionType) => {
-  const timerTask = startTimer(gameState, gameScreen, questionType);
+export default class GameScreen {
+  constructor() {
+    this.view = null;
+  }
 
-  gameScreen.header.onBackButtonClick = () => {
-    timerTask.stop();
-    resetGame(gameState);
-  };
+  init(gameState) {
+    const timerTask = startTimer(gameState, this.view);
 
-  gameScreen.continueGame = (isCorrect, answerRate) => {
-    timerTask.stop();
-    recordAnswer(isCorrect, answerRate, gameState);
-    checkContinue(gameState, questionType);
-  };
+    this.view.header.onBackButtonClick = () => {
+      timerTask.stop();
+      resetGame(gameState);
+    };
 
-  gameScreen.element.querySelector(`.header`).appendChild(gameScreen.header.element);
-};
+    this.view.continueGame = (isCorrect, answerRate) => {
+      timerTask.stop();
+      recordAnswer(isCorrect, answerRate, gameState);
+      checkContinue(gameState, this.view.questionType);
+    };
+
+    const header = this.view.element.querySelector(`.header`);
+    header.appendChild(this.view.header.element);
+
+    renderScreen(this.view.element);
+  }
+}

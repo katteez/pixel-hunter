@@ -1,9 +1,9 @@
 import AbstractView from '../abstract-view';
 
 export default class IntroView extends AbstractView {
-  constructor(text) {
+  constructor() {
     super();
-    this.text = text;
+    this.text = `Это не фото. Это рисунок маслом нидерландского художника-фотореалиста Tjalf Sparnaay.`;
   }
 
   get template() {
