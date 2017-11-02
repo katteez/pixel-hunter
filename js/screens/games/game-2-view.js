@@ -1,19 +1,16 @@
-import AbstractView from '../abstract-view';
-import HeaderView from '../header/header-view';
+import GameView from './game-view';
 
-export default class Game2View extends AbstractView {
+export default class Game2View extends GameView {
   constructor(gameState, statsBar, text, img) {
-    super();
+    super(gameState, text);
     this.gameState = gameState;
-    this.header = new HeaderView(this.gameState);
     this.statsBar = statsBar(this.gameState);
-    this.text = text;
     this.img = img;
   }
 
   get template() {
     return String.raw`
-    ${this.header.template}
+    <header class="header"></header>
     <div class="game">
       <p class="game__task">${this.text}</p>
       <form class="game__content  game__content--wide">
@@ -36,20 +33,10 @@ export default class Game2View extends AbstractView {
   }
 
   bind() {
+    super.bind();
     const answersForm = this.element.querySelector(`.game__content`);
     const questions1 = answersForm.querySelectorAll(`input[name=question1]`);
-    const goBackButton = this.element.querySelector(`.back`);
-    this.timerElement = this.element.querySelector(`.game__timer`);
 
     answersForm.addEventListener(`click`, () => this.onFormClick(questions1, this.img.imgType));
-    goBackButton.addEventListener(`click`, this.onBackButtonClick);
-  }
-
-  onFormClick() {}
-
-  onBackButtonClick() {}
-
-  updateTime(time) {
-    this.timerElement.textContent = time;
   }
 }

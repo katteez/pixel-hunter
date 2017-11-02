@@ -78,22 +78,30 @@ const checkContinue = (gameState, questionType) => {
 };
 
 const startTimer = (gameState, gameScreen, questionType) => {
-  let timeoutHolder = {};
+  const timerTask = {
+    _timeoutId: null,
+    stop() {
+      if (this._timeoutId) {
+        clearTimeout(this._timeoutId);
+        this._timeoutId = null;
+      }
+    }
+  };
 
   const goTimer = () => {
     const timer = getTimer(gameState.time);
     gameState.time = timer.tick();
     gameScreen.updateTime(gameState.time);
     if (gameState.time > 0) {
-      timeoutHolder.value = setTimeout(goTimer, 1000);
+      timerTask._timeoutId = setTimeout(goTimer, 1000);
     } else {
       recordAnswer(false, `unknown`, gameState);
       checkContinue(gameState, questionType);
     }
   };
 
-  timeoutHolder.value = setTimeout(goTimer, 1000);
-  return timeoutHolder;
+  timerTask._timeoutId = setTimeout(goTimer, 1000);
+  return timerTask;
 };
 
 export {resetGame, getAnswerRate, recordAnswer, checkContinue, startTimer};

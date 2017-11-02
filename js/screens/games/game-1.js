@@ -1,8 +1,9 @@
 import Game1View from './game-1-view';
+import processGame from './game';
 import statsBar from '../stats-bar';
 import pictures from '../../pictures';
 import {getUniqueImgArray} from '../../utils';
-import {resetGame, getAnswerRate, recordAnswer, checkContinue, startTimer} from '../../game-logic';
+import {getAnswerRate} from '../../game-logic';
 
 const IMG_COUNT = 2;
 
@@ -14,8 +15,6 @@ export default (data, gameState) => {
   const hasCheckedAnswer = (collection) => [...collection].some((item) => item.checked);
   const getCheckedAnswer = (collection) => [...collection].filter((item) => item.checked)[0].value;
 
-  let timeoutHolder = startTimer(gameState, game1Screen, data.type);
-
   game1Screen.onFormClick = (questions1, questions2, img1Type, img2Type) => {
     if (hasCheckedAnswer(questions1) && hasCheckedAnswer(questions2)) {
       let answerOnQuestion1 = getCheckedAnswer(questions1);
@@ -23,16 +22,11 @@ export default (data, gameState) => {
       let isCorrect = answerOnQuestion1 === img1Type && answerOnQuestion2 === img2Type;
       let answerRate = getAnswerRate(gameState.time);
 
-      clearTimeout(timeoutHolder.value);
-      recordAnswer(isCorrect, answerRate, gameState);
-      checkContinue(gameState, data.type);
+      game1Screen.continueGame(isCorrect, answerRate);
     }
   };
 
-  game1Screen.onBackButtonClick = () => {
-    clearTimeout(timeoutHolder.value);
-    resetGame(gameState);
-  };
+  processGame(gameState, game1Screen, data.type);
 
   return game1Screen.element;
 };
