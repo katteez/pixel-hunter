@@ -1,20 +1,9 @@
-import getHtmlElement from '../../create-element';
-import renderScreen from '../../render-screen';
+import IntroView from './intro-view';
 import data from './intro-data';
+import renderScreen from '../../render-screen';
 
-const innerHtml = String.raw`
-  <div id="main" class="central__content">
-    <div id="intro" class="intro">
-      <h1 class="intro__asterisk">*</h1>
-      <p class="intro__motto"><sup>*</sup>${data.text}</p>
-    </div>
-  </div>`;
+const introScreen = new IntroView(data.text);
 
-const intro = getHtmlElement(innerHtml);
-const asterisk = intro.querySelector(`.intro__asterisk`);
+introScreen.onButtonClick = () => renderScreen(data.nextScreen);
 
-asterisk.addEventListener(`click`, () => {
-  renderScreen(data.nextScreen);
-});
-
-export default intro;
+export default introScreen.element;

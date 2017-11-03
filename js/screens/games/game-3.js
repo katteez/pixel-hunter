@@ -1,9 +1,9 @@
-import getHtmlElement from '../../create-element';
-import getHeader from '../header/header';
+import Game3View from './game-3-view';
+import processGame from './game';
 import statsBar from '../stats-bar';
 import pictures from '../../pictures';
 import {getUniqueImgArray} from '../../utils';
-import {resetGame, getAnswerRate, recordAnswer, checkContinue} from '../../game-logic';
+import {getAnswerRate} from '../../game-logic';
 
 const RIGHT_IMG_TYPE = `paint`;
 const IMG_COUNT = 3;
@@ -11,44 +11,21 @@ const IMG_COUNT = 3;
 export default (data, gameState) => {
   let imgArray = getUniqueImgArray(pictures, IMG_COUNT);
 
-  const innerHTML = String.raw`
-  ${getHeader(gameState)}
-  <div class="game">
-    <p class="game__task">${data.text}</p>
-    <form class="game__content  game__content--triple">
-      <div class="game__option">
-        <img src="${imgArray[0].imgSrc}" alt="Option 1">
-      </div>
-      <div class="game__option  game__option--selected">
-        <img src="${imgArray[1].imgSrc}" alt="Option 1">
-      </div>
-      <div class="game__option">
-        <img src="${imgArray[2].imgSrc}" alt="Option 1">
-      </div>
-    </form>
-    <div class="stats">
-      ${statsBar(gameState)}
-    </div>
-  </div>`;
-
-  const game3 = getHtmlElement(innerHTML);
-  const answersForm = game3.querySelector(`.game__content`);
-  const goBackButton = game3.querySelector(`.back`);
+  const game3Screen = new Game3View(gameState, statsBar, data.text, imgArray[0], imgArray[1], imgArray[2]);
 
   const imgSrcArray = imgArray.map((img) => img.imgSrc);
 
-  answersForm.addEventListener(`click`, (e) => {
+  game3Screen.onFormClick = (e) => {
     if (e.target.classList.contains(`game__option`)) {
       let answerIndex = imgSrcArray.indexOf(e.target.children[0].src);
       let isCorrect = imgArray[answerIndex].imgType === RIGHT_IMG_TYPE;
       let answerRate = getAnswerRate(gameState.time);
 
-      recordAnswer(isCorrect, answerRate, gameState);
-      checkContinue(gameState, data.type);
+      game3Screen.continueGame(isCorrect, answerRate);
     }
-  });
+  };
 
-  goBackButton.addEventListener(`click`, () => resetGame(gameState));
+  processGame(gameState, game3Screen, data.type);
 
-  return game3;
+  return game3Screen.element;
 };
