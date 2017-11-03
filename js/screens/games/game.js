@@ -17,7 +17,7 @@ export default class GameScreen {
 
     timer.onEnd(() => {
       recordAnswer(false, `unknown`, gameState);
-      checkContinue(gameState, this.view.questionType);
+      checkContinue(gameState);
     });
 
     timer.start();
@@ -30,7 +30,7 @@ export default class GameScreen {
     this.view.continueGame = (isCorrect, answerRate) => {
       timer.stop();
       recordAnswer(isCorrect, answerRate, gameState);
-      checkContinue(gameState, this.view.questionType);
+      checkContinue(gameState);
     };
 
     const header = this.view.element.querySelector(`.header`);

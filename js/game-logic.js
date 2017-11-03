@@ -46,7 +46,7 @@ const recordAnswer = (isCorrect, answerRate, gameState) => {
   gameState.questionNumber++;
 };
 
-const checkContinue = (gameState, questionType) => {
+const checkContinue = (gameState) => {
   if (gameState.lives < 0) {
     gameState.win = false;
     App.showStats(gameState);
@@ -56,17 +56,7 @@ const checkContinue = (gameState, questionType) => {
   } else {
     gameState.time = INIT_TIME;
 
-    switch (questionType) {
-      case `game1`:
-        App.showGame2(gameState);
-        break;
-      case `game2`:
-        App.showGame3(gameState);
-        break;
-      case `game3`:
-        App.showGame1(gameState);
-        break;
-    }
+    App.showGame(gameState);
   }
 };
 
