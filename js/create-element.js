@@ -1,5 +1,5 @@
 const getHtmlElement = (htmlAsString) => {
-  let element = document.createElement(`div`);
+  const element = document.createElement(`div`);
   element.innerHTML = htmlAsString;
   return element;
 };

@@ -1,8 +1,8 @@
 import GameView from './game-view';
 
 export default class Game2View extends GameView {
-  constructor(gameState, statsBar, text, img) {
-    super(gameState, text);
+  constructor(gameState, statsBar, img) {
+    super(`game2`, `Угадай, фото или рисунок?`, gameState);
     this.gameState = gameState;
     this.statsBar = statsBar(this.gameState);
     this.img = img;

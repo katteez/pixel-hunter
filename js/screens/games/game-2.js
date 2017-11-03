@@ -1,29 +1,34 @@
 import Game2View from './game-2-view';
-import processGame from './game';
+import GameScreen from './game';
 import statsBar from '../stats-bar';
 import pictures from '../../pictures';
 import {getRandomFromInterval} from '../../utils';
 import {getAnswerRate} from '../../game-logic';
 
-export default (data, gameState) => {
-  let img = pictures[getRandomFromInterval(0, pictures.length)];
+class Game2Screen extends GameScreen {
+  constructor() {
+    super();
+  }
 
-  const game2Screen = new Game2View(gameState, statsBar, data.text, img);
+  init(gameState) {
+    let img = pictures[getRandomFromInterval(0, pictures.length)];
 
-  const hasCheckedAnswer = (collection) => [...collection].some((item) => item.checked);
-  const getCheckedAnswer = (collection) => [...collection].filter((item) => item.checked)[0].value;
+    this.view = new Game2View(gameState, statsBar, img);
 
-  game2Screen.onFormClick = (questions1, imgType) => {
-    if (hasCheckedAnswer(questions1)) {
-      let answerOnQuestion1 = getCheckedAnswer(questions1);
-      let isCorrect = answerOnQuestion1 === imgType;
-      let answerRate = getAnswerRate(gameState.time);
+    const hasCheckedAnswer = (collection) => [...collection].some((item) => item.checked);
+    const getCheckedAnswer = (collection) => [...collection].filter((item) => item.checked)[0].value;
 
-      game2Screen.continueGame(isCorrect, answerRate);
-    }
-  };
+    this.view.onFormClick = (questions1, imgType) => {
+      if (hasCheckedAnswer(questions1)) {
+        let answerOnQuestion1 = getCheckedAnswer(questions1);
+        let isCorrect = answerOnQuestion1 === imgType;
+        let answerRate = getAnswerRate(gameState.time);
 
-  processGame(gameState, game2Screen, data.type);
+        this.view.continueGame(isCorrect, answerRate);
+      }
+    };
+    super.init(gameState);
+  }
+}
 
-  return game2Screen.element;
-};
+export default new Game2Screen();
