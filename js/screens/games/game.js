@@ -1,4 +1,5 @@
-import {resetGame, recordAnswer, checkContinue, startTimer} from '../../game-logic';
+import getTimer from '../../get-timer';
+import {resetGame, recordAnswer, checkContinue} from '../../game-logic';
 import renderScreen from '../../render-screen';
 
 export default class GameScreen {
@@ -7,15 +8,27 @@ export default class GameScreen {
   }
 
   init(gameState) {
-    const timerTask = startTimer(gameState, this.view);
+    const timer = getTimer(gameState.time);
+
+    timer.onUpdate((time) => {
+      gameState.time = time;
+      this.view.updateTime(time);
+    });
+
+    timer.onEnd(() => {
+      recordAnswer(false, `unknown`, gameState);
+      checkContinue(gameState, this.view.questionType);
+    });
+
+    timer.start();
 
     this.view.header.onBackButtonClick = () => {
-      timerTask.stop();
+      timer.stop();
       resetGame(gameState);
     };
 
     this.view.continueGame = (isCorrect, answerRate) => {
-      timerTask.stop();
+      timer.stop();
       recordAnswer(isCorrect, answerRate, gameState);
       checkContinue(gameState, this.view.questionType);
     };

@@ -1,6 +1,5 @@
 import App from './application';
 import statsData from './screens/stats/stats-data';
-import getTimer from './get-timer';
 
 const INIT_TIME = 30;
 const INIT_LIVES = 3;
@@ -71,31 +70,4 @@ const checkContinue = (gameState, questionType) => {
   }
 };
 
-const startTimer = (gameState, gameView) => {
-  const timerTask = {
-    _timeoutId: null,
-    stop() {
-      if (this._timeoutId) {
-        clearTimeout(this._timeoutId);
-        this._timeoutId = null;
-      }
-    }
-  };
-
-  const goTimer = () => {
-    const timer = getTimer(gameState.time);
-    gameState.time = timer.tick();
-    gameView.updateTime(gameState.time);
-    if (gameState.time > 0) {
-      timerTask._timeoutId = setTimeout(goTimer, 1000);
-    } else {
-      recordAnswer(false, `unknown`, gameState);
-      checkContinue(gameState, gameView.questionType);
-    }
-  };
-
-  timerTask._timeoutId = setTimeout(goTimer, 1000);
-  return timerTask;
-};
-
-export {resetGame, getAnswerRate, recordAnswer, checkContinue, startTimer};
+export {resetGame, getAnswerRate, recordAnswer, checkContinue};

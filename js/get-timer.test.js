@@ -45,4 +45,12 @@ describe(`Таймер.`, () => {
     assert.equal(timer.tick(), `Time is up`);
     assert.equal(timer.tick(), `Time is up`);
   });
+
+  it(`Запускает/останавливает таймаут`, () => {
+    const timer = getTimer(30);
+    timer.start();
+    assert.equal(!!timer._timeoutId, true);
+    timer.stop();
+    assert.equal(!!timer._timeoutId, false);
+  });
 });
