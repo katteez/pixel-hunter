@@ -5,34 +5,93 @@ import game1Screen from './screens/games/game-1';
 import game2Screen from './screens/games/game-2';
 import game3Screen from './screens/games/game-3';
 import statsScreen from './screens/stats/stats-screen';
+import initialState from './game-state';
+import statsData from './screens/stats/stats-data';
+import {encode, decode} from './encode';
+
+const ControllerId = {
+  INTRO: ``,
+  GREETING: `greeting`,
+  RULES: `rules`,
+  GAME_1: `game1`,
+  GAME_2: `game2`,
+  GAME_3: `game3`,
+  STATS: `stats`
+};
+
+const saveGameState = (gameState) => {
+  return JSON.stringify(gameState);
+};
+
+const loadState = (dataString) => {
+  try {
+    return JSON.parse(dataString);
+  } catch (e) {
+    return initialState;
+  }
+};
+
+const routes = {
+  [ControllerId.INTRO]: introScreen,
+  [ControllerId.GREETING]: greetingScreen,
+  [ControllerId.RULES]: rulesScreen,
+  [ControllerId.GAME_1]: game1Screen,
+  [ControllerId.GAME_2]: game2Screen,
+  [ControllerId.GAME_3]: game3Screen,
+  [ControllerId.STATS]: statsScreen
+};
+
 
 export default class Application {
+  static init() {
+    const onHashChange = () => {
+      const hashValue = location.hash.replace(`#`, ``);
+      const [id, data] = hashValue.split(`?`);
+      this.changeHash(id, data);
+    };
+    window.addEventListener(`hashchange`, onHashChange);
+    onHashChange();
+  }
+
+  static changeHash(id, data) {
+    const controller = routes[id];
+    if (controller) {
+      switch (controller) {
+        case statsScreen:
+          controller.init(decode(data), statsData);
+          break;
+        default:
+          controller.init(loadState(data));
+          break;
+      }
+    }
+  }
 
   static showIntro() {
-    introScreen.init();
+    location.hash = ControllerId.INTRO;
   }
 
   static showGreeting() {
-    greetingScreen.init();
+    location.hash = ControllerId.GREETING;
   }
 
   static showRules() {
-    rulesScreen.init();
+    location.hash = ControllerId.RULES;
   }
 
   static showGame1(gameState) {
-    game1Screen.init(gameState);
+    location.hash = `${ControllerId.GAME_1}?${saveGameState(gameState)}`;
   }
 
   static showGame2(gameState) {
-    game2Screen.init(gameState);
+    location.hash = `${ControllerId.GAME_2}?${saveGameState(gameState)}`;
   }
 
   static showGame3(gameState) {
-    game3Screen.init(gameState);
+    location.hash = `${ControllerId.GAME_3}?${saveGameState(gameState)}`;
   }
 
   static showStats(gameState) {
-    statsScreen.init(gameState);
+    location.hash = `${ControllerId.STATS}?${encode(gameState)}`;
   }
 }

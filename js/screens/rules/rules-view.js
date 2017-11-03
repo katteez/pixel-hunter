@@ -27,7 +27,7 @@ export default class RulesView extends AbstractView {
     const goBackButton = this.element.querySelector(`.back`);
 
     playerName.addEventListener(`input`, (e) => this.onInputChange(e.target, buttonSubmit));
-    buttonSubmit.addEventListener(`click`, this.onFormSubmit);
+    buttonSubmit.addEventListener(`click`, () => this.onFormSubmit(playerName));
     goBackButton.addEventListener(`click`, this.onBackButtonClick);
   }
 
