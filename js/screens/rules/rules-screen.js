@@ -13,7 +13,10 @@ class RulesScreen {
       buttonSubmit.disabled = !target.value;
     };
 
-    this.view.onFormSubmit = () => App.showGame1(gameState);
+    this.view.onFormSubmit = (input) => {
+      gameState.playerName = input.value;
+      App.showGame1(gameState);
+    };
 
     this.view.onBackButtonClick = resetGame;
 

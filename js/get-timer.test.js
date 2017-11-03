@@ -46,7 +46,7 @@ describe(`Таймер.`, () => {
     assert.equal(timer.tick(), `Time is up`);
   });
 
-  it(`Запускает/останавливает таймаут`, () => {
+  it(`Запускает/останавливает таймер`, () => {
     const timer = getTimer(30);
     timer.start();
     assert.equal(!!timer._timeoutId, true);

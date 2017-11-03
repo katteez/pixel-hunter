@@ -1,12 +1,11 @@
 import StatsView from './stats-view';
 import statsBar from '../stats-bar';
-import statsData from './stats-data';
 import getScore from '../../get-score';
 import {resetGame} from '../../game-logic';
 import renderScreen from '../../render-screen';
 
 class StatsScreen {
-  init(gameState) {
+  init(gameState, statsData) {
     const title = (gameState.win) ? `Победа!` : `Проигрыш`;
 
     const correctAnswersCount = gameState.answers.filter((answer) => answer !== `wrong` && answer !== `unknown`).length;
