@@ -8,7 +8,6 @@ import statsScreen from './screens/stats/stats-screen';
 import statsData from './screens/stats/stats-data';
 import gameState from './game-state';
 import {encode, decode} from './encode';
-import Loader from './loader';
 
 const ControllerId = {
   INTRO: ``,
@@ -98,8 +97,3 @@ export default class Application {
     location.hash = `${ControllerId.STATS}?${encode(state)}`;
   }
 }
-
-
-Loader.loadData()
-    .then((gameData) => Application.init(gameData))
-    .catch(window.console.error);
