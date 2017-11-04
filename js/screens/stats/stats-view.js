@@ -1,24 +1,15 @@
 import AbstractView from '../abstract-view';
 import headerBack from '../header/header-back';
+import statsBar from '../stats-bar';
 
 export default class StatsView extends AbstractView {
-  constructor(gameState, statsBar, title, bonusScores, correctAnswerScores, scoring) {
+  constructor(bonusScores, correctAnswerScores, scoringArray) {
     super();
-    this.gameState = gameState;
-    this.statsBar = statsBar(this.gameState);
-    this.title = title;
     this.fastBonuses = bonusScores.fast;
     this.livesBonuses = bonusScores.lives;
     this.slowBonuses = bonusScores.slow;
     this.correctAnswerScores = correctAnswerScores;
-    this.correctScoresTotal = scoring.correctScoresTotal;
-    this.fastAnswersCount = scoring.fastAnswersCount;
-    this.fastBonusesTotal = scoring.fastBonusesTotal;
-    this.lives = scoring.lives;
-    this.livesBonusesTotal = scoring.livesBonusesTotal;
-    this.slowAnswersCount = scoring.slowAnswersCount;
-    this.slowBonusesTotal = scoring.slowBonusesTotal;
-    this.totalScores = scoring.totalScores;
+    this.scoringArray = scoringArray;
   }
 
   /*
@@ -107,22 +98,23 @@ export default class StatsView extends AbstractView {
   get template() {
     return String.raw`
     ${headerBack}
+    ${this.scoringArray.map((scoring) => `
     <div class="result">
-      <h1>${this.title}</h1>
-      <table class="result__table">
-        <tr>
-          <td class="result__number">1.</td>
-          <td colspan="2">
-            ${this.statsBar}
-          </td>
-          ${this._templateCorrectScores(this.gameState, this.correctAnswerScores, this.correctScoresTotal)}
-        </tr>
-        ${this._templateFast(this.gameState, this.fastAnswersCount, this.fastBonuses, this.fastBonusesTotal)}
-        ${this._templateLives(this.gameState, this.lives, this.livesBonuses, this.livesBonusesTotal)}
-        ${this._templateSlow(this.gameState, this.slowAnswersCount, this.slowBonuses, this.slowBonusesTotal)}
-        ${this._templateTotalScore(this.gameState, this.totalScores)}
-      </table>
-    </div>`;
+      <h1>${scoring.title}</h1>
+        <table class="result__table">
+          <tr>
+            <td class="result__number"></td>
+            <td colspan="2">
+              ${statsBar(scoring.gameState)}
+            </td>
+            ${this._templateCorrectScores(scoring.gameState, this.correctAnswerScores, scoring.correctScoresTotal)}
+          </tr>
+          ${this._templateFast(scoring.gameState, scoring.fastAnswersCount, this.fastBonuses, scoring.fastBonusesTotal)}
+          ${this._templateLives(scoring.gameState, scoring.lives, this.livesBonuses, scoring.livesBonusesTotal)}
+          ${this._templateSlow(scoring.gameState, scoring.slowAnswersCount, this.slowBonuses, scoring.slowBonusesTotal)}
+          ${this._templateTotalScore(scoring.gameState, scoring.totalScores)}
+        </table>
+    </div>`).join(``)}`;
   }
 
   bind() {

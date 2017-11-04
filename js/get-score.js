@@ -32,9 +32,7 @@ const getScore = (answers, remainingLives) => {
     return -1;
   }
 
-  const correctAnswersCount = answers.filter((currentAnswer) => {
-    return currentAnswer.isCorrect;
-  }).length;
+  const correctAnswersCount = answers.filter((currentAnswer) => currentAnswer && currentAnswer.isCorrect).length;
 
   if (correctAnswersCount < MIN_CORRECT_ANSWERS) {
     return -1;

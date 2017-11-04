@@ -7,7 +7,6 @@ import Game3Screen from './screens/games/game-3';
 import statsScreen from './screens/stats/stats-screen';
 import statsData from './screens/stats/stats-data';
 import gameState from './game-state';
-import {encode, decode} from './encode';
 import Loader from './loader';
 
 const ControllerId = {
@@ -23,6 +22,7 @@ const ControllerId = {
 export default class Application {
   static init(gameData) {
     this.gameData = gameData;
+    this.userName = `katteez`;
 
     this.routes = {
       [ControllerId.INTRO]: introScreen,
@@ -36,34 +36,26 @@ export default class Application {
 
     const onHashChange = () => {
       const hashValue = location.hash.replace(`#`, ``);
-      const [id, data] = hashValue.split(`?`);
-      this.changeHash(id, data);
+      const [id, name] = hashValue.split(`?`);
+      if (name) {
+        this.userName = name;
+      }
+      this.changeHash(id);
     };
     window.addEventListener(`hashchange`, onHashChange);
     onHashChange();
   }
 
-  static changeHash(id, data) {
+  static changeHash(id) {
     const controller = this.routes[id];
     if (controller) {
-      if (data) {
-        const newGameState = decode(data);
-        gameState.time = newGameState.time;
-        gameState.lives = newGameState.lives;
-        gameState.answers = newGameState.answers;
-        gameState.questionNumber = newGameState.questionNumber;
-        gameState.win = newGameState.win;
-
-        switch (controller) {
-          case statsScreen:
-            controller.init(gameState, statsData);
-            break;
-          default:
-            controller.init(gameState);
-            break;
-        }
-      } else {
-        controller.init();
+      switch (controller) {
+        case statsScreen:
+          controller.init(statsData);
+          break;
+        default:
+          controller.init(gameState);
+          break;
       }
     }
   }
@@ -95,7 +87,9 @@ export default class Application {
   }
 
   static showStats(state) {
-    location.hash = `${ControllerId.STATS}?${encode(state)}`;
+    Loader.saveResults(state, state.playerName).then(() => {
+      location.hash = `${ControllerId.STATS}?${state.playerName}`;
+    });
   }
 }
 

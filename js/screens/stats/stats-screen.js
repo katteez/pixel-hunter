@@ -1,39 +1,64 @@
-import StatsView from './stats-view';
-import statsBar from '../stats-bar';
-import getScore from '../../get-score';
+import currentGameState from '../../game-state';
 import {resetGame} from '../../game-logic';
+import StatsView from './stats-view';
+import getScore from '../../get-score';
 import renderScreen from '../../render-screen';
+import App from '../../application';
+import Loader from '../../loader';
 
 class StatsScreen {
-  init(gameState, statsData) {
-    const title = (gameState.win) ? `Победа!` : `Проигрыш`;
+  init(statsData) {
+    Loader.loadResults(App.userName).then((results) => {
+      const scoringArray = [];
 
-    const correctAnswersCount = gameState.answers.filter((answer) => answer !== `wrong` && answer !== `unknown`).length;
-    const correctScoresTotal = correctAnswersCount * statsData.correctAnswerScores;
+      results.forEach((gameState) => {
+        const title = (gameState.win) ? `Победа!` : `Проигрыш`;
 
-    const fastAnswersCount = gameState.answers.filter((answer) => answer === `fast`).length;
-    const fastBonusesTotal = fastAnswersCount * statsData.bonuses.fast;
+        const correctAnswersCount = gameState.answers
+            .filter((answer) => answer)
+            .filter((answer) => answer.answerRate !== `wrong` && answer !== `unknown`).length;
+        const correctScoresTotal = correctAnswersCount * statsData.correctAnswerScores;
 
-    let lives;
-    if (gameState.lives > 0) {
-      lives = gameState.lives;
-    } else {
-      lives = 0;
-    }
-    const livesBonusesTotal = lives * statsData.bonuses.lives;
+        const fastAnswersCount = gameState.answers
+            .filter((answer) => answer)
+            .filter((answer) => answer.answerRate === `fast`).length;
+        const fastBonusesTotal = fastAnswersCount * statsData.bonuses.fast;
 
-    const slowAnswersCount = gameState.answers.filter((answer) => answer === `slow`).length;
-    const slowBonusesTotal = slowAnswersCount * statsData.bonuses.slow;
+        let lives;
+        if (gameState.lives > 0) {
+          lives = gameState.lives;
+        } else {
+          lives = 0;
+        }
+        const livesBonusesTotal = lives * statsData.bonuses.lives;
 
-    const totalScores = getScore(statsData.playerAnswers, gameState.lives);
+        const slowAnswersCount = gameState.answers
+            .filter((answer) => answer)
+            .filter((answer) => answer.answerRate === `slow`).length;
+        const slowBonusesTotal = slowAnswersCount * statsData.bonuses.slow;
 
-    const scoring = {correctScoresTotal, fastAnswersCount, fastBonusesTotal, lives, livesBonusesTotal, slowAnswersCount, slowBonusesTotal, totalScores};
+        const totalScores = getScore(gameState.answers, gameState.lives);
 
-    this.view = new StatsView(gameState, statsBar, title, statsData.bonuses, statsData.correctAnswerScores, scoring);
+        const scoring = {
+          gameState,
+          title,
+          correctScoresTotal,
+          fastAnswersCount,
+          fastBonusesTotal,
+          lives,
+          livesBonusesTotal,
+          slowAnswersCount,
+          slowBonusesTotal,
+          totalScores
+        };
+        scoringArray.push(scoring);
+      });
+      this.view = new StatsView(statsData.bonuses, statsData.correctAnswerScores, scoringArray);
 
-    this.view.onBackButtonClick = () => resetGame(gameState);
+      this.view.onBackButtonClick = () => resetGame(currentGameState);
 
-    renderScreen(this.view.element);
+      renderScreen(this.view.element);
+    });
   }
 }
 
