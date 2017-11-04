@@ -20,12 +20,23 @@ const ControllerId = {
 };
 
 export default class Application {
+  static prepareDataAndInit() {
+    greetingScreen.init();
+    greetingScreen.fadeOut();
+    introScreen.init();
+    Loader.loadData()
+        .then((gameData) => Loader.preloadImages(gameData))
+        .then((gameData) => Application.init(gameData))
+        .then(() => greetingScreen.fadeIn())
+        .then(() => introScreen.remove())
+        .catch(window.console.error);
+  }
+
   static init(gameData) {
     this.gameData = gameData;
     this.userName = `katteez`;
 
     this.routes = {
-      [ControllerId.INTRO]: introScreen,
       [ControllerId.GREETING]: greetingScreen,
       [ControllerId.RULES]: rulesScreen,
       [ControllerId.GAME_1]: new Game1Screen(gameData),
@@ -40,13 +51,13 @@ export default class Application {
       if (name) {
         this.userName = name;
       }
-      this.changeHash(id);
+      Application._changeHash(id);
     };
     window.addEventListener(`hashchange`, onHashChange);
     onHashChange();
   }
 
-  static changeHash(id) {
+  static _changeHash(id) {
     const controller = this.routes[id];
     if (controller) {
       switch (controller) {
@@ -58,10 +69,6 @@ export default class Application {
           break;
       }
     }
-  }
-
-  static showIntro() {
-    location.hash = ControllerId.INTRO;
   }
 
   static showGreeting() {
@@ -93,7 +100,4 @@ export default class Application {
   }
 }
 
-
-Loader.loadData()
-    .then((gameData) => Application.init(gameData))
-    .catch(window.console.error);
+Application.prepareDataAndInit();

@@ -11,10 +11,12 @@ export default (gameState) => String.raw `
     ${gameState.answers
       .map((answer) => {
         let rate;
-        if (answer) {
+        if (answer && answer.answerRate) {
           rate = answer.isCorrect || answer.answerRate === `unknown`
             ? answer.answerRate
             : `wrong`;
+        } else if (!answer) {
+          rate = `unknown`;
         } else {
           rate = `unknown`;
         }

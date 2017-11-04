@@ -9,6 +9,14 @@ class GreetingScreen {
     this.view.onButtonClick = () => App.showRules();
     renderScreen(this.view.element);
   }
+
+  fadeOut() {
+    this.view._greetingElement.classList.add(`transparent`);
+  }
+
+  fadeIn() {
+    this.view._greetingElement.classList.remove(`transparent`);
+  }
 }
 
 export default new GreetingScreen();

@@ -1,5 +1,16 @@
 @import "colors";
 
+.intro-wrap {
+  position: absolute;
+  right: 0;
+  left: 0;
+  transition: opacity 1s ease-in-out;
+
+  &.transparent {
+    opacity: 0;
+  }
+}
+
 .intro {
   width: 800px;
   height: 740px;
@@ -19,6 +30,12 @@
   position: relative;
   top: 220px;
   left: 30px;
+
+  animation-name: rotate;
+  animation-duration: 1.5s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  transform-origin: center -10px;
 
   &:hover {
     color: $link-hover-color;
