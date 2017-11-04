@@ -6,9 +6,7 @@ export default class StatsView extends AbstractView {
   constructor(title, bonusScores, correctAnswerScores, scoringArray) {
     super();
     this.title = title;
-    this.fastBonuses = bonusScores.fast;
-    this.livesBonuses = bonusScores.lives;
-    this.slowBonuses = bonusScores.slow;
+    this.bonusScores = bonusScores;
     this.correctAnswerScores = correctAnswerScores;
     this.scoringArray = scoringArray;
   }
@@ -110,9 +108,9 @@ export default class StatsView extends AbstractView {
             </td>
             ${this._templateCorrectScores(scoring.gameState, this.correctAnswerScores, scoring.correctScoresTotal)}
           </tr>
-          ${this._templateFast(scoring.gameState, scoring.fastAnswersCount, this.fastBonuses, scoring.fastBonusesTotal)}
-          ${this._templateLives(scoring.gameState, scoring.lives, this.livesBonuses, scoring.livesBonusesTotal)}
-          ${this._templateSlow(scoring.gameState, scoring.slowAnswersCount, this.slowBonuses, scoring.slowBonusesTotal)}
+          ${this._templateFast(scoring.gameState, scoring.fastAnswersCount, this.bonusScores.FAST, scoring.fastBonusesTotal)}
+          ${this._templateLives(scoring.gameState, scoring.lives, this.bonusScores.LIVES, scoring.livesBonusesTotal)}
+          ${this._templateSlow(scoring.gameState, scoring.slowAnswersCount, this.bonusScores.SLOW, scoring.slowBonusesTotal)}
           ${this._templateTotalScore(scoring.gameState, scoring.totalScores)}
         </table>`).reverse().join(``)}
     </div>`;

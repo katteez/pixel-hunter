@@ -1,7 +1,8 @@
 import App from './application';
 import footer from './screens/footer';
 
+const mainElement = document.querySelector(`.central`);
+
 App.prepareDataAndInit();
 
-const mainElement = document.querySelector(`.central`);
 mainElement.insertAdjacentHTML(`afterEnd`, footer);

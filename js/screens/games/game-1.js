@@ -2,7 +2,7 @@ import Game1View from './game-1-view';
 import GameScreen from './game';
 import statsBar from '../stats-bar';
 import {getAnswerRate} from '../../game-logic';
-import IMG_TYPE from './img-type';
+import ImgType from './img-type';
 
 class Game1Screen extends GameScreen {
   constructor(gameData) {
@@ -15,13 +15,10 @@ class Game1Screen extends GameScreen {
 
     this.view = new Game1View(gameState, statsBar, data);
 
-    const hasCheckedAnswer = (collection) => [...collection].some((item) => item.checked);
-    const getCheckedAnswer = (collection) => [...collection].filter((item) => item.checked)[0].value;
-
     this.view.onFormClick = (questions1, questions2, img1Type, img2Type) => {
-      if (hasCheckedAnswer(questions1) && hasCheckedAnswer(questions2)) {
-        let answerOnQuestion1 = IMG_TYPE[getCheckedAnswer(questions1)];
-        let answerOnQuestion2 = IMG_TYPE[getCheckedAnswer(questions2)];
+      if (this.view.hasCheckedAnswer(questions1) && this.view.hasCheckedAnswer(questions2)) {
+        let answerOnQuestion1 = ImgType[this.view.getCheckedAnswer(questions1).toUpperCase()];
+        let answerOnQuestion2 = ImgType[this.view.getCheckedAnswer(questions2).toUpperCase()];
         let isCorrect = answerOnQuestion1 === img1Type && answerOnQuestion2 === img2Type;
         let answerRate = getAnswerRate(gameState.time);
 

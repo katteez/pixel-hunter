@@ -31,6 +31,10 @@ export default class GameScreen {
       }
     };
 
+    this.view.hasCheckedAnswer = (collection) => [...collection].some((item) => item.checked);
+
+    this.view.getCheckedAnswer = (collection) => [...collection].filter((item) => item.checked)[0].value;
+
     this.view.continueGame = (isCorrect, answerRate) => {
       timer.stop();
       recordAnswer(isCorrect, answerRate, gameState);

@@ -5,7 +5,6 @@ import Game1Screen from './screens/games/game-1';
 import Game2Screen from './screens/games/game-2';
 import Game3Screen from './screens/games/game-3';
 import statsScreen from './screens/stats/stats-screen';
-import statsData from './screens/stats/stats-data';
 import gameState from './game-state';
 import Loader from './loader';
 
@@ -62,7 +61,7 @@ export default class Application {
     if (controller) {
       switch (controller) {
         case statsScreen:
-          controller.init(statsData);
+          controller.init();
           break;
         default:
           controller.init(gameState);
