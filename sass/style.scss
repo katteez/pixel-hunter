@@ -34,3 +34,13 @@ a {
   background-color: transparent;
   cursor: pointer;
 }
+
+@keyframes flicker {
+  from, to {
+    color: #000;
+  }
+
+  50% {
+    color: #f00;
+  }
+}

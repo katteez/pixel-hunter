@@ -15,6 +15,12 @@
   top: 25px;
   left: 50%;
   transform: translateX(-50%);
+
+  &.flicker {
+    animation-name: flicker;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+  }
 }
 
 .game__lives {
