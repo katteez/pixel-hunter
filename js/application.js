@@ -34,7 +34,7 @@ export default class Application {
 
   static init(gameData) {
     this.gameData = gameData;
-    this.userName = `katteez`;
+    this.userName = ``;
 
     this.routes = {
       [ControllerId.GREETING]: greetingScreen,

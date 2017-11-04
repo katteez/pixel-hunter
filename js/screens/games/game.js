@@ -23,6 +23,7 @@ export default class GameScreen {
     timer.start();
 
     this.view.header.onBackButtonClick = () => {
+      // eslint-disable-next-line
       const isConfirm = window.confirm(`Вся игра будет потеряна. Продолжить?`);
       if (isConfirm) {
         timer.stop();

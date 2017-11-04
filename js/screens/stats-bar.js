@@ -15,8 +15,6 @@ export default (gameState) => String.raw `
           rate = answer.isCorrect || answer.answerRate === `unknown`
             ? answer.answerRate
             : `wrong`;
-        } else if (!answer) {
-          rate = `unknown`;
         } else {
           rate = `unknown`;
         }
