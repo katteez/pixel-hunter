@@ -1,11 +1,12 @@
 import introScreen from './screens/intro/intro-screen';
 import greetingScreen from './screens/greeting/greeting-screen';
 import rulesScreen from './screens/rules/rules-screen';
-import game1Screen from './screens/games/game-1';
-import game2Screen from './screens/games/game-2';
-import game3Screen from './screens/games/game-3';
+import Game1Screen from './screens/games/game-1';
+import Game2Screen from './screens/games/game-2';
+import Game3Screen from './screens/games/game-3';
 import statsScreen from './screens/stats/stats-screen';
 import statsData from './screens/stats/stats-data';
+import gameState from './game-state';
 import {encode, decode} from './encode';
 
 const ControllerId = {
@@ -18,19 +19,20 @@ const ControllerId = {
   STATS: `stats`
 };
 
-const routes = {
-  [ControllerId.INTRO]: introScreen,
-  [ControllerId.GREETING]: greetingScreen,
-  [ControllerId.RULES]: rulesScreen,
-  [ControllerId.GAME_1]: game1Screen,
-  [ControllerId.GAME_2]: game2Screen,
-  [ControllerId.GAME_3]: game3Screen,
-  [ControllerId.STATS]: statsScreen
-};
-
-
 export default class Application {
-  static init() {
+  static init(gameData) {
+    this.gameData = gameData;
+
+    this.routes = {
+      [ControllerId.INTRO]: introScreen,
+      [ControllerId.GREETING]: greetingScreen,
+      [ControllerId.RULES]: rulesScreen,
+      [ControllerId.GAME_1]: new Game1Screen(gameData),
+      [ControllerId.GAME_2]: new Game2Screen(gameData),
+      [ControllerId.GAME_3]: new Game3Screen(gameData),
+      [ControllerId.STATS]: statsScreen
+    };
+
     const onHashChange = () => {
       const hashValue = location.hash.replace(`#`, ``);
       const [id, data] = hashValue.split(`?`);
@@ -41,15 +43,22 @@ export default class Application {
   }
 
   static changeHash(id, data) {
-    const controller = routes[id];
+    const controller = this.routes[id];
     if (controller) {
       if (data) {
+        const newGameState = decode(data);
+        gameState.time = newGameState.time;
+        gameState.lives = newGameState.lives;
+        gameState.answers = newGameState.answers;
+        gameState.questionNumber = newGameState.questionNumber;
+        gameState.win = newGameState.win;
+
         switch (controller) {
           case statsScreen:
-            controller.init(decode(data), statsData);
+            controller.init(gameState, statsData);
             break;
           default:
-            controller.init(decode(data));
+            controller.init(gameState);
             break;
         }
       } else {
@@ -70,19 +79,21 @@ export default class Application {
     location.hash = ControllerId.RULES;
   }
 
-  static showGame1(gameState) {
-    location.hash = `${ControllerId.GAME_1}?${encode(gameState)}`;
+  static showGame(state) {
+    switch (this.gameData[gameState.questionNumber].type) {
+      case `two-of-two`:
+        Application.routes[ControllerId.GAME_1].init(state);
+        break;
+      case `tinder-like`:
+        Application.routes[ControllerId.GAME_2].init(state);
+        break;
+      case `one-of-three`:
+        Application.routes[ControllerId.GAME_3].init(state);
+        break;
+    }
   }
 
-  static showGame2(gameState) {
-    location.hash = `${ControllerId.GAME_2}?${encode(gameState)}`;
-  }
-
-  static showGame3(gameState) {
-    location.hash = `${ControllerId.GAME_3}?${encode(gameState)}`;
-  }
-
-  static showStats(gameState) {
-    location.hash = `${ControllerId.STATS}?${encode(gameState)}`;
+  static showStats(state) {
+    location.hash = `${ControllerId.STATS}?${encode(state)}`;
   }
 }

@@ -15,7 +15,7 @@ class RulesScreen {
 
     this.view.onFormSubmit = (input) => {
       gameState.playerName = input.value;
-      App.showGame1(gameState);
+      App.showGame(gameState);
     };
 
     this.view.onBackButtonClick = resetGame;

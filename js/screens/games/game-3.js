@@ -1,29 +1,30 @@
 import Game3View from './game-3-view';
 import GameScreen from './game';
 import statsBar from '../stats-bar';
-import pictures from '../../pictures';
-import {getUniqueImgArray} from '../../utils';
 import {getAnswerRate} from '../../game-logic';
 
 class Game3Screen extends GameScreen {
-  constructor() {
+  constructor(gameData) {
     super();
+    this.data = gameData;
   }
 
   init(gameState) {
-    const RIGHT_IMG_TYPE = `paint`;
-    const IMG_COUNT = 3;
+    const data = this.data[gameState.questionNumber];
 
-    const imgArray = getUniqueImgArray(pictures, IMG_COUNT);
+    this.view = new Game3View(gameState, statsBar, data);
 
-    this.view = new Game3View(gameState, statsBar, imgArray[0], imgArray[1], imgArray[2]);
+    const RIGHT_IMG_TYPE = {
+      'Найдите фото среди изображений': `photo`,
+      'Найдите рисунок среди изображений': `painting`
+    };
+    const imgArray = data.answers;
+    const imgSrcArray = imgArray.map((item) => item.image.url);
 
-    const imgSrcArray = imgArray.map((img) => img.imgSrc);
-
-    this.view.onFormClick = (e) => {
+    this.view.onFormClick = (e, question) => {
       if (e.target.classList.contains(`game__option`)) {
         let answerIndex = imgSrcArray.indexOf(e.target.children[0].src);
-        let isCorrect = imgArray[answerIndex].imgType === RIGHT_IMG_TYPE;
+        let isCorrect = imgArray[answerIndex].type === RIGHT_IMG_TYPE[question];
         let answerRate = getAnswerRate(gameState.time);
 
         this.view.continueGame(isCorrect, answerRate);
@@ -33,4 +34,4 @@ class Game3Screen extends GameScreen {
   }
 }
 
-export default new Game3Screen();
+export default Game3Screen;
