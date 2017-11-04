@@ -99,5 +99,3 @@ export default class Application {
     });
   }
 }
-
-Application.prepareDataAndInit();
