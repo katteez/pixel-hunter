@@ -8,12 +8,12 @@ import Loader from '../../loader';
 
 class StatsScreen {
   init(statsData) {
+    const title = (currentGameState.win) ? `Победа!` : `Проигрыш`;
+
     Loader.loadResults(App.userName).then((results) => {
       const scoringArray = [];
 
       results.forEach((gameState) => {
-        const title = (gameState.win) ? `Победа!` : `Проигрыш`;
-
         const correctAnswersCount = gameState.answers
             .filter((answer) => answer)
             .filter((answer) => answer.answerRate !== `wrong` && answer !== `unknown`).length;
@@ -41,7 +41,6 @@ class StatsScreen {
 
         const scoring = {
           gameState,
-          title,
           correctScoresTotal,
           fastAnswersCount,
           fastBonusesTotal,
@@ -53,7 +52,7 @@ class StatsScreen {
         };
         scoringArray.push(scoring);
       });
-      this.view = new StatsView(statsData.bonuses, statsData.correctAnswerScores, scoringArray);
+      this.view = new StatsView(title, statsData.bonuses, statsData.correctAnswerScores, scoringArray);
 
       this.view.onBackButtonClick = () => resetGame(currentGameState);
 

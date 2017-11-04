@@ -3,8 +3,9 @@ import headerBack from '../header/header-back';
 import statsBar from '../stats-bar';
 
 export default class StatsView extends AbstractView {
-  constructor(bonusScores, correctAnswerScores, scoringArray) {
+  constructor(title, bonusScores, correctAnswerScores, scoringArray) {
     super();
+    this.title = title;
     this.fastBonuses = bonusScores.fast;
     this.livesBonuses = bonusScores.lives;
     this.slowBonuses = bonusScores.slow;
@@ -98,12 +99,12 @@ export default class StatsView extends AbstractView {
   get template() {
     return String.raw`
     ${headerBack}
-    ${this.scoringArray.map((scoring) => `
     <div class="result">
-      <h1>${scoring.title}</h1>
+      <h1>${this.title}</h1>
+      ${this.scoringArray.map((scoring, id) => `
         <table class="result__table">
           <tr>
-            <td class="result__number"></td>
+            <td class="result__number">${this.scoringArray.length - id}.</td>
             <td colspan="2">
               ${statsBar(scoring.gameState)}
             </td>
@@ -113,8 +114,8 @@ export default class StatsView extends AbstractView {
           ${this._templateLives(scoring.gameState, scoring.lives, this.livesBonuses, scoring.livesBonusesTotal)}
           ${this._templateSlow(scoring.gameState, scoring.slowAnswersCount, this.slowBonuses, scoring.slowBonusesTotal)}
           ${this._templateTotalScore(scoring.gameState, scoring.totalScores)}
-        </table>
-    </div>`).join(``)}`;
+        </table>`).reverse().join(``)}
+    </div>`;
   }
 
   bind() {
