@@ -59,14 +59,7 @@ export default class Application {
   static _changeHash(id) {
     const controller = this.routes[id];
     if (controller) {
-      switch (controller) {
-        case statsScreen:
-          controller.init();
-          break;
-        default:
-          controller.init(gameState);
-          break;
-      }
+      controller.init();
     }
   }
 
