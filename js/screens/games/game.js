@@ -23,8 +23,11 @@ export default class GameScreen {
     timer.start();
 
     this.view.header.onBackButtonClick = () => {
-      timer.stop();
-      resetGame(gameState);
+      const isConfirm = window.confirm(`Вся игра будет потеряна. Продолжить?`);
+      if (isConfirm) {
+        timer.stop();
+        resetGame(gameState);
+      }
     };
 
     this.view.continueGame = (isCorrect, answerRate) => {
