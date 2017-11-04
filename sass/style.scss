@@ -34,3 +34,22 @@ a {
   background-color: transparent;
   cursor: pointer;
 }
+
+@keyframes flicker {
+  from, to {
+    color: #000;
+  }
+
+  50% {
+    color: #f00;
+  }
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0)
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

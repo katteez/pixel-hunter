@@ -1,4 +1,4 @@
 export default {
-  photo: `photo`,
-  paint: `painting`
+  PHOTO: `photo`,
+  PAINT: `painting`
 };

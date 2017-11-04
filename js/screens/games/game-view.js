@@ -15,6 +15,9 @@ export default class GameView extends AbstractView {
   onBackButtonClick() {}
 
   updateTime(time) {
+    if (time < 6) {
+      this.header.timerElement.classList.add(`flicker`);
+    }
     this.header.timerElement.textContent = time;
   }
 }

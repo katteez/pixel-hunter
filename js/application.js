@@ -5,9 +5,8 @@ import Game1Screen from './screens/games/game-1';
 import Game2Screen from './screens/games/game-2';
 import Game3Screen from './screens/games/game-3';
 import statsScreen from './screens/stats/stats-screen';
-import statsData from './screens/stats/stats-data';
 import gameState from './game-state';
-import {encode, decode} from './encode';
+import Loader from './loader';
 
 const ControllerId = {
   INTRO: ``,
@@ -20,11 +19,23 @@ const ControllerId = {
 };
 
 export default class Application {
+  static prepareDataAndInit() {
+    greetingScreen.init();
+    greetingScreen.fadeOut();
+    introScreen.init();
+    Loader.loadData()
+        .then((gameData) => Loader.preloadImages(gameData))
+        .then((gameData) => Application.init(gameData))
+        .then(() => greetingScreen.fadeIn())
+        .then(() => introScreen.remove())
+        .catch(window.console.error);
+  }
+
   static init(gameData) {
     this.gameData = gameData;
+    this.userName = ``;
 
     this.routes = {
-      [ControllerId.INTRO]: introScreen,
       [ControllerId.GREETING]: greetingScreen,
       [ControllerId.RULES]: rulesScreen,
       [ControllerId.GAME_1]: new Game1Screen(gameData),
@@ -35,40 +46,28 @@ export default class Application {
 
     const onHashChange = () => {
       const hashValue = location.hash.replace(`#`, ``);
-      const [id, data] = hashValue.split(`?`);
-      this.changeHash(id, data);
+      const [id, name] = hashValue.split(`?`);
+      if (name) {
+        this.userName = name;
+      }
+      Application._changeHash(id);
     };
     window.addEventListener(`hashchange`, onHashChange);
     onHashChange();
   }
 
-  static changeHash(id, data) {
+  static _changeHash(id) {
     const controller = this.routes[id];
     if (controller) {
-      if (data) {
-        const newGameState = decode(data);
-        gameState.time = newGameState.time;
-        gameState.lives = newGameState.lives;
-        gameState.answers = newGameState.answers;
-        gameState.questionNumber = newGameState.questionNumber;
-        gameState.win = newGameState.win;
-
-        switch (controller) {
-          case statsScreen:
-            controller.init(gameState, statsData);
-            break;
-          default:
-            controller.init(gameState);
-            break;
-        }
-      } else {
-        controller.init();
+      switch (controller) {
+        case statsScreen:
+          controller.init();
+          break;
+        default:
+          controller.init(gameState);
+          break;
       }
     }
-  }
-
-  static showIntro() {
-    location.hash = ControllerId.INTRO;
   }
 
   static showGreeting() {
@@ -94,6 +93,8 @@ export default class Application {
   }
 
   static showStats(state) {
-    location.hash = `${ControllerId.STATS}?${encode(state)}`;
+    Loader.saveResults(state, state.playerName).then(() => {
+      location.hash = `${ControllerId.STATS}?${state.playerName}`;
+    });
   }
 }

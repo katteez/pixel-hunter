@@ -23,9 +23,17 @@ export default class GameScreen {
     timer.start();
 
     this.view.header.onBackButtonClick = () => {
-      timer.stop();
-      resetGame(gameState);
+      // eslint-disable-next-line
+      const isConfirm = window.confirm(`Вся игра будет потеряна. Продолжить?`);
+      if (isConfirm) {
+        timer.stop();
+        resetGame(gameState);
+      }
     };
+
+    this.view.hasCheckedAnswer = (collection) => [...collection].some((item) => item.checked);
+
+    this.view.getCheckedAnswer = (collection) => [...collection].filter((item) => item.checked)[0].value;
 
     this.view.continueGame = (isCorrect, answerRate) => {
       timer.stop();

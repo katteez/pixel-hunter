@@ -8,5 +8,18 @@ const classFromRate = {
 
 export default (gameState) => String.raw `
   <ul class="stats">
-    ${gameState.answers.map((answerRate) => `<li class="stats__result stats__result--${classFromRate[answerRate]}"></li>`).join(``)}
+    ${gameState.answers
+      .map((answer) => {
+        let rate;
+        if (answer && answer.answerRate) {
+          rate = answer.isCorrect || answer.answerRate === `unknown`
+            ? answer.answerRate
+            : `wrong`;
+        } else {
+          rate = `unknown`;
+        }
+        return rate;
+      })
+      .map((rate) => `<li class="stats__result stats__result--${classFromRate[rate]}"></li>`)
+      .join(``)}
   </ul>`;

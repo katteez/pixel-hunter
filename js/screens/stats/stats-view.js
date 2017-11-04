@@ -1,24 +1,14 @@
 import AbstractView from '../abstract-view';
 import headerBack from '../header/header-back';
+import statsBar from '../stats-bar';
 
 export default class StatsView extends AbstractView {
-  constructor(gameState, statsBar, title, bonusScores, correctAnswerScores, scoring) {
+  constructor(title, bonusScores, correctAnswerScores, scoringArray) {
     super();
-    this.gameState = gameState;
-    this.statsBar = statsBar(this.gameState);
     this.title = title;
-    this.fastBonuses = bonusScores.fast;
-    this.livesBonuses = bonusScores.lives;
-    this.slowBonuses = bonusScores.slow;
+    this.bonusScores = bonusScores;
     this.correctAnswerScores = correctAnswerScores;
-    this.correctScoresTotal = scoring.correctScoresTotal;
-    this.fastAnswersCount = scoring.fastAnswersCount;
-    this.fastBonusesTotal = scoring.fastBonusesTotal;
-    this.lives = scoring.lives;
-    this.livesBonusesTotal = scoring.livesBonusesTotal;
-    this.slowAnswersCount = scoring.slowAnswersCount;
-    this.slowBonusesTotal = scoring.slowBonusesTotal;
-    this.totalScores = scoring.totalScores;
+    this.scoringArray = scoringArray;
   }
 
   /*
@@ -109,19 +99,20 @@ export default class StatsView extends AbstractView {
     ${headerBack}
     <div class="result">
       <h1>${this.title}</h1>
-      <table class="result__table">
-        <tr>
-          <td class="result__number">1.</td>
-          <td colspan="2">
-            ${this.statsBar}
-          </td>
-          ${this._templateCorrectScores(this.gameState, this.correctAnswerScores, this.correctScoresTotal)}
-        </tr>
-        ${this._templateFast(this.gameState, this.fastAnswersCount, this.fastBonuses, this.fastBonusesTotal)}
-        ${this._templateLives(this.gameState, this.lives, this.livesBonuses, this.livesBonusesTotal)}
-        ${this._templateSlow(this.gameState, this.slowAnswersCount, this.slowBonuses, this.slowBonusesTotal)}
-        ${this._templateTotalScore(this.gameState, this.totalScores)}
-      </table>
+      ${this.scoringArray.map((scoring, id) => `
+        <table class="result__table">
+          <tr>
+            <td class="result__number">${this.scoringArray.length - id}.</td>
+            <td colspan="2">
+              ${statsBar(scoring.gameState)}
+            </td>
+            ${this._templateCorrectScores(scoring.gameState, this.correctAnswerScores, scoring.correctScoresTotal)}
+          </tr>
+          ${this._templateFast(scoring.gameState, scoring.fastAnswersCount, this.bonusScores.FAST, scoring.fastBonusesTotal)}
+          ${this._templateLives(scoring.gameState, scoring.lives, this.bonusScores.LIVES, scoring.livesBonusesTotal)}
+          ${this._templateSlow(scoring.gameState, scoring.slowAnswersCount, this.bonusScores.SLOW, scoring.slowBonusesTotal)}
+          ${this._templateTotalScore(scoring.gameState, scoring.totalScores)}
+        </table>`).reverse().join(``)}
     </div>`;
   }
 

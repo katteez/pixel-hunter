@@ -1,5 +1,4 @@
 import App from './application';
-import statsData from './screens/stats/stats-data';
 
 const INIT_TIME = 30;
 const INIT_LIVES = 3;
@@ -28,22 +27,10 @@ const getAnswerRate = (answerTime) => {
 };
 
 const recordAnswer = (isCorrect, answerRate, gameState) => {
-  if (answerRate !== `unknown`) {
-    statsData.playerAnswers[gameState.questionNumber] = {isCorrect, answerRate};
-  }
-
-  if (isCorrect) {
-    gameState.answers[gameState.questionNumber] = answerRate;
-  } else {
+  gameState.answers[gameState.questionNumber++] = {isCorrect, answerRate};
+  if (!isCorrect) {
     gameState.lives--;
-
-    if (answerRate === `unknown`) {
-      gameState.answers[gameState.questionNumber] = answerRate;
-    } else {
-      gameState.answers[gameState.questionNumber] = `wrong`;
-    }
   }
-  gameState.questionNumber++;
 };
 
 const checkContinue = (gameState) => {
