@@ -3,12 +3,12 @@ import headerBack from '../header/header-back';
 import statsBar from '../stats-bar';
 
 export default class StatsView extends AbstractView {
-  constructor(title, bonusScores, correctAnswerScores, scoringArray) {
+  constructor(title, bonusScores, correctAnswerScores, scores) {
     super();
     this.title = title;
     this.bonusScores = bonusScores;
     this.correctAnswerScores = correctAnswerScores;
-    this.scoringArray = scoringArray;
+    this.scores = scores;
   }
 
   /*
@@ -99,10 +99,10 @@ export default class StatsView extends AbstractView {
     ${headerBack}
     <div class="result">
       <h1>${this.title}</h1>
-      ${this.scoringArray.map((scoring, id) => `
+      ${this.scores.map((scoring, id) => `
         <table class="result__table">
           <tr>
-            <td class="result__number">${this.scoringArray.length - id}.</td>
+            <td class="result__number">${this.scores.length - id}.</td>
             <td colspan="2">
               ${statsBar(scoring.gameState)}
             </td>

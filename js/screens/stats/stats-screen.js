@@ -12,7 +12,7 @@ class StatsScreen {
     const title = (currentGameState.win) ? `Победа!` : `Проигрыш`;
 
     Loader.loadResults(App.userName).then((results) => {
-      const scoringArray = [];
+      const scores = [];
 
       results.forEach((gameState) => {
         const correctAnswersCount = gameState.answers
@@ -48,9 +48,9 @@ class StatsScreen {
           slowBonusesTotal,
           totalScores
         };
-        scoringArray.push(scoring);
+        scores.push(scoring);
       });
-      this.view = new StatsView(title, Bonuses, CORRECT_ANSWER_SCORES, scoringArray);
+      this.view = new StatsView(title, Bonuses, CORRECT_ANSWER_SCORES, scores);
 
       this.view.onBackButtonClick = () => resetGame(currentGameState);
 
