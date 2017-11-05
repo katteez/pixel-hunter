@@ -6,17 +6,17 @@ import {getAnswerRate} from '../../game-logic';
 class Game3Screen extends GameScreen {
   constructor(gameData) {
     super();
-    this.data = gameData;
+    this._data = gameData;
   }
 
   init(gameState) {
-    const data = this.data[gameState.questionNumber];
+    const data = this._data[gameState.questionNumber];
     const imgArray = data.answers;
     const imgSrcArray = imgArray.map((item) => item.image.url);
 
-    this.view = new Game3View(gameState, statsBar, data);
+    this._view = new Game3View(gameState, statsBar, data);
 
-    this.view.onFormClick = (e, question) => {
+    this._view.onFormClick = (e, question) => {
       if (e.target.classList.contains(`game__option`)) {
         let answerIndex = imgSrcArray.indexOf(e.target.children[0].src);
         let imgType;
@@ -30,7 +30,7 @@ class Game3Screen extends GameScreen {
         let isCorrect = imgArray[answerIndex].type === imgType;
         let answerRate = getAnswerRate(gameState.time);
 
-        this.view.continueGame(isCorrect, answerRate);
+        this._view.continueGame(isCorrect, answerRate);
       }
     };
     super.init(gameState);

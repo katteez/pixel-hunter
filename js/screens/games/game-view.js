@@ -4,8 +4,12 @@ import HeaderView from '../header/header-view';
 export default class GameView extends AbstractView {
   constructor(question, gameState) {
     super();
-    this.question = question;
-    this.header = new HeaderView(gameState);
+    this._question = question;
+    this._header = new HeaderView(gameState);
+  }
+
+  get header() {
+    return this._header;
   }
 
   onFormClick() {}
@@ -15,9 +19,9 @@ export default class GameView extends AbstractView {
   onBackButtonClick() {}
 
   updateTime(time) {
-    if (time < 6) {
-      this.header.timerElement.classList.add(`flicker`);
+    if (time === 5) {
+      this._header.timerElement.classList.add(`flicker`);
     }
-    this.header.timerElement.textContent = time;
+    this._header.timerElement.textContent = time;
   }
 }

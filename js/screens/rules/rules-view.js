@@ -4,16 +4,16 @@ import headerBack from '../header/header-back';
 export default class RulesView extends AbstractView {
   constructor(title, text) {
     super();
-    this.title = title;
-    this.text = text;
+    this._title = title;
+    this._text = text;
   }
 
   get template() {
     return String.raw`
       ${headerBack}
       <div class="rules">
-        <h1 class="rules__title">${this.title}</h1>
-        <p class="rules__description">${this.text}</p>
+        <h1 class="rules__title">${this._title}</h1>
+        <p class="rules__description">${this._text}</p>
         <form class="rules__form">
           <input class="rules__input" type="text" placeholder="Ваше Имя">
           <button class="rules__button  continue" type="submit" disabled>Go!</button>

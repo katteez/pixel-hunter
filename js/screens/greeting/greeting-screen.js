@@ -5,17 +5,17 @@ import renderScreen from '../../render-screen';
 
 class GreetingScreen {
   init() {
-    this.view = new GreetingView(greetingData.title, greetingData.text);
-    this.view.onButtonClick = () => App.showRules();
-    renderScreen(this.view.element);
+    this._view = new GreetingView(greetingData.title, greetingData.text);
+    this._view.onButtonClick = () => App.showRules();
+    renderScreen(this._view.element);
   }
 
   fadeOut() {
-    this.view._greetingElement.classList.add(`transparent`);
+    this._view.greetingElement.classList.add(`transparent`);
   }
 
   fadeIn() {
-    this.view._greetingElement.classList.remove(`transparent`);
+    this._view.greetingElement.classList.remove(`transparent`);
   }
 }
 

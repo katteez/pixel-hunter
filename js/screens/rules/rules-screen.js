@@ -7,20 +7,20 @@ import renderScreen from '../../render-screen';
 
 class RulesScreen {
   init() {
-    this.view = new RulesView(rulesData.title, rulesData.text);
+    this._view = new RulesView(rulesData.title, rulesData.text);
 
-    this.view.onInputChange = (target, buttonSubmit) => {
+    this._view.onInputChange = (target, buttonSubmit) => {
       buttonSubmit.disabled = !target.value;
     };
 
-    this.view.onFormSubmit = (input) => {
+    this._view.onFormSubmit = (input) => {
       gameState.playerName = input.value;
       App.showGame(gameState);
     };
 
-    this.view.onBackButtonClick = resetGame;
+    this._view.onBackButtonClick = resetGame;
 
-    renderScreen(this.view.element);
+    renderScreen(this._view.element);
   }
 }
 

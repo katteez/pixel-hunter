@@ -7,21 +7,21 @@ import ImgType from './img-type';
 class Game2Screen extends GameScreen {
   constructor(gameData) {
     super();
-    this.data = gameData;
+    this._data = gameData;
   }
 
   init(gameState) {
-    const data = this.data[gameState.questionNumber];
+    const data = this._data[gameState.questionNumber];
 
-    this.view = new Game2View(gameState, statsBar, data);
+    this._view = new Game2View(gameState, statsBar, data);
 
-    this.view.onFormClick = (questions1, imgType) => {
-      if (this.view.hasCheckedAnswer(questions1)) {
-        let answerOnQuestion1 = ImgType[this.view.getCheckedAnswer(questions1).toUpperCase()];
+    this._view.onFormClick = (questions1, imgType) => {
+      if (this._view.hasCheckedAnswer(questions1)) {
+        let answerOnQuestion1 = ImgType[this._view.getCheckedAnswer(questions1).toUpperCase()];
         let isCorrect = answerOnQuestion1 === imgType;
         let answerRate = getAnswerRate(gameState.time);
 
-        this.view.continueGame(isCorrect, answerRate);
+        this._view.continueGame(isCorrect, answerRate);
       }
     };
     super.init(gameState);

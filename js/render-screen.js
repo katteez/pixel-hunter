@@ -1,8 +1,8 @@
-const mainElement = document.querySelector(`.central`);
+import App from './application';
 
 const renderScreen = (screenElement) => {
-  mainElement.innerHTML = ``;
-  mainElement.appendChild(screenElement);
+  App.mainElement.innerHTML = ``;
+  App.mainElement.appendChild(screenElement);
 };
 
 export default renderScreen;

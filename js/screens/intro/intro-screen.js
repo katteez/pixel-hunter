@@ -2,21 +2,19 @@ import App from '../../application';
 import IntroView from './intro-view';
 
 const REMOVE_ELEMENT_TIME = 1000;
-const mainElement = document.querySelector(`.central`);
 
 class IntroScreen {
   init() {
-    this.view = new IntroView();
-    this.view.onButtonClick = App.showGreeting;
-    const introElement = this.view.element;
-    introElement.classList.add(`intro-wrap`);
-    mainElement.appendChild(introElement);
+    this._view = new IntroView();
+    this._view.onButtonClick = App.showGreeting;
+    this._view.element.classList.add(`intro-wrap`);
+    App.mainElement.appendChild(this._view.element);
   }
 
   remove() {
-    this.view.element.classList.add(`transparent`);
+    this._view.element.classList.add(`transparent`);
     setTimeout(() => {
-      this.view.element.remove();
+      this._view.element.remove();
     }, REMOVE_ELEMENT_TIME);
   }
 }

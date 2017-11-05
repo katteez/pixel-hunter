@@ -4,17 +4,17 @@ import headerBack from './header-back';
 export default class HeaderView extends AbstractView {
   constructor(gameState) {
     super();
-    this.gameState = gameState;
+    this._gameState = gameState;
   }
 
   get template() {
     return String.raw `
     ${headerBack}
-      <h1 class="game__timer">${this.gameState.time}</h1>
+      <h1 class="game__timer">${this._gameState.time}</h1>
       <div class="game__lives">
-      ${new Array(3 - this.gameState.lives)
+      ${new Array(3 - this._gameState.lives)
       .fill(`<img src="img/heart__empty.svg" class="game__heart" alt="Life" width="32" height="32">`).join(``)}
-      ${new Array(this.gameState.lives)
+      ${new Array(this._gameState.lives)
       .fill(`<img src="img/heart__full.svg" class="game__heart" alt="Life" width="32" height="32">`).join(``)}
       </div>`;
   }

@@ -4,7 +4,7 @@ import renderScreen from '../../render-screen';
 
 export default class GameScreen {
   constructor() {
-    this.view = null;
+    this._view = null;
   }
 
   init(gameState) {
@@ -12,7 +12,7 @@ export default class GameScreen {
 
     timer.onUpdate((time) => {
       gameState.time = time;
-      this.view.updateTime(time);
+      this._view.updateTime(time);
     });
 
     timer.onEnd(() => {
@@ -22,7 +22,7 @@ export default class GameScreen {
 
     timer.start();
 
-    this.view.header.onBackButtonClick = () => {
+    this._view.header.onBackButtonClick = () => {
       // eslint-disable-next-line
       const isConfirm = window.confirm(`Вся игра будет потеряна. Продолжить?`);
       if (isConfirm) {
@@ -31,19 +31,19 @@ export default class GameScreen {
       }
     };
 
-    this.view.hasCheckedAnswer = (collection) => [...collection].some((item) => item.checked);
+    this._view.hasCheckedAnswer = (collection) => [...collection].some((item) => item.checked);
 
-    this.view.getCheckedAnswer = (collection) => [...collection].filter((item) => item.checked)[0].value;
+    this._view.getCheckedAnswer = (collection) => [...collection].filter((item) => item.checked)[0].value;
 
-    this.view.continueGame = (isCorrect, answerRate) => {
+    this._view.continueGame = (isCorrect, answerRate) => {
       timer.stop();
       recordAnswer(isCorrect, answerRate, gameState);
       checkContinue(gameState);
     };
 
-    const header = this.view.element.querySelector(`.header`);
-    header.appendChild(this.view.header.element);
+    const header = this._view.element.querySelector(`.header`);
+    header.appendChild(this._view.header.element);
 
-    renderScreen(this.view.element);
+    renderScreen(this._view.element);
   }
 }

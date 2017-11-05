@@ -5,10 +5,10 @@ import statsBar from '../stats-bar';
 export default class StatsView extends AbstractView {
   constructor(title, bonusScores, correctAnswerScores, scores) {
     super();
-    this.title = title;
-    this.bonusScores = bonusScores;
-    this.correctAnswerScores = correctAnswerScores;
-    this.scores = scores;
+    this._title = title;
+    this._bonusScores = bonusScores;
+    this._correctAnswerScores = correctAnswerScores;
+    this._scores = scores;
   }
 
   /*
@@ -98,19 +98,19 @@ export default class StatsView extends AbstractView {
     return String.raw`
     ${headerBack}
     <div class="result">
-      <h1>${this.title}</h1>
-      ${this.scores.map((scoring, id) => `
+      <h1>${this._title}</h1>
+      ${this._scores.map((scoring, id) => `
         <table class="result__table">
           <tr>
-            <td class="result__number">${this.scores.length - id}.</td>
+            <td class="result__number">${this._scores.length - id}.</td>
             <td colspan="2">
               ${statsBar(scoring.gameState)}
             </td>
-            ${this._templateCorrectScores(scoring.gameState, this.correctAnswerScores, scoring.correctScoresTotal)}
+            ${this._templateCorrectScores(scoring.gameState, this._correctAnswerScores, scoring.correctScoresTotal)}
           </tr>
-          ${this._templateFast(scoring.gameState, scoring.fastAnswersCount, this.bonusScores.FAST, scoring.fastBonusesTotal)}
-          ${this._templateLives(scoring.gameState, scoring.lives, this.bonusScores.LIVES, scoring.livesBonusesTotal)}
-          ${this._templateSlow(scoring.gameState, scoring.slowAnswersCount, this.bonusScores.SLOW, scoring.slowBonusesTotal)}
+          ${this._templateFast(scoring.gameState, scoring.fastAnswersCount, this._bonusScores.FAST, scoring.fastBonusesTotal)}
+          ${this._templateLives(scoring.gameState, scoring.lives, this._bonusScores.LIVES, scoring.livesBonusesTotal)}
+          ${this._templateSlow(scoring.gameState, scoring.slowAnswersCount, this._bonusScores.SLOW, scoring.slowBonusesTotal)}
           ${this._templateTotalScore(scoring.gameState, scoring.totalScores)}
         </table>`).reverse().join(``)}
     </div>`;

@@ -5,7 +5,6 @@ import Game1Screen from './screens/games/game-1';
 import Game2Screen from './screens/games/game-2';
 import Game3Screen from './screens/games/game-3';
 import statsScreen from './screens/stats/stats-screen';
-import gameState from './game-state';
 import Loader from './loader';
 
 const ControllerId = {
@@ -19,6 +18,17 @@ const ControllerId = {
 };
 
 export default class Application {
+  static get mainElement() {
+    if (!this._mainElement) {
+      this._mainElement = document.querySelector(`.central`);
+    }
+    return this._mainElement;
+  }
+
+  static get userName() {
+    return this._userName;
+  }
+
   static prepareDataAndInit() {
     greetingScreen.init();
     greetingScreen.fadeOut();
@@ -32,10 +42,10 @@ export default class Application {
   }
 
   static init(gameData) {
-    this.gameData = gameData;
-    this.userName = ``;
+    this._gameData = gameData;
+    this._userName = ``;
 
-    this.routes = {
+    this._routes = {
       [ControllerId.GREETING]: greetingScreen,
       [ControllerId.RULES]: rulesScreen,
       [ControllerId.GAME_1]: new Game1Screen(gameData),
@@ -48,7 +58,7 @@ export default class Application {
       const hashValue = location.hash.replace(`#`, ``);
       const [id, name] = hashValue.split(`?`);
       if (name) {
-        this.userName = name;
+        this._userName = name;
       }
       Application._changeHash(id);
     };
@@ -57,7 +67,7 @@ export default class Application {
   }
 
   static _changeHash(id) {
-    const controller = this.routes[id];
+    const controller = this._routes[id];
     if (controller) {
       controller.init();
     }
@@ -72,15 +82,15 @@ export default class Application {
   }
 
   static showGame(state) {
-    switch (this.gameData[gameState.questionNumber].type) {
+    switch (this._gameData[state.questionNumber].type) {
       case `two-of-two`:
-        Application.routes[ControllerId.GAME_1].init(state);
+        this._routes[ControllerId.GAME_1].init(state);
         break;
       case `tinder-like`:
-        Application.routes[ControllerId.GAME_2].init(state);
+        this._routes[ControllerId.GAME_2].init(state);
         break;
       case `one-of-three`:
-        Application.routes[ControllerId.GAME_3].init(state);
+        this._routes[ControllerId.GAME_3].init(state);
         break;
     }
   }

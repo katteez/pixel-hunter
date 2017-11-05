@@ -50,11 +50,11 @@ class StatsScreen {
         };
         scores.push(scoring);
       });
-      this.view = new StatsView(title, Bonuses, CORRECT_ANSWER_SCORES, scores);
+      this._view = new StatsView(title, Bonuses, CORRECT_ANSWER_SCORES, scores);
 
-      this.view.onBackButtonClick = () => resetGame(currentGameState);
+      this._view.onBackButtonClick = () => resetGame(currentGameState);
 
-      renderScreen(this.view.element);
+      renderScreen(this._view.element);
     });
   }
 }
