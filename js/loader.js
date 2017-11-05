@@ -35,15 +35,17 @@ export default class Loader {
   }
 
   static preloadImages(gameData) {
-    const images = [].concat(...gameData.map((question) => question.answers));
-    const promises = images.map((imageData) => {
-      return new Promise((resolve) => {
-        const img = document.createElement(`img`);
-        img.src = imageData.image.url;
-        img.onload = resolve;
-        img.onerror = resolve;
-      });
-    });
+    const promises = [];
+    for (const question of gameData) {
+      for (const imageData of question.answers) {
+        promises.push(new Promise((resolve) => {
+          const img = document.createElement(`img`);
+          img.src = imageData.image.url;
+          img.onload = resolve;
+          img.onerror = resolve;
+        }));
+      }
+    }
     return Promise.all(promises).then(() => gameData);
   }
 }

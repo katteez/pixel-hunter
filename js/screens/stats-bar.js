@@ -18,8 +18,7 @@ export default (gameState) => String.raw `
         } else {
           rate = `unknown`;
         }
-        return rate;
+        return `<li class="stats__result stats__result--${classFromRate[rate]}"></li>`;
       })
-      .map((rate) => `<li class="stats__result stats__result--${classFromRate[rate]}"></li>`)
       .join(``)}
   </ul>`;
