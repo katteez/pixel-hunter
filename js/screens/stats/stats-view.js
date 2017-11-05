@@ -14,7 +14,7 @@ export default class StatsView extends AbstractView {
   /*
   * Баллы за правильные ответы
   */
-  _templateCorrectScores(gameState, correctAnswerScores, correctScoresTotal) {
+  static _templateCorrectScores(gameState, correctAnswerScores, correctScoresTotal) {
     if (gameState.win) {
       return `
       <td class="result__points">×&nbsp;${correctAnswerScores}</td>
@@ -28,7 +28,7 @@ export default class StatsView extends AbstractView {
   /*
   * Бонусы за скорость
   */
-  _templateFast(gameState, fastAnswersCount, fastBonuses, fastBonusesTotal) {
+  static _templateFast(gameState, fastAnswersCount, fastBonuses, fastBonusesTotal) {
     if (gameState.win && fastAnswersCount) {
       return `
       <tr>
@@ -45,7 +45,7 @@ export default class StatsView extends AbstractView {
   /*
   * Бонусы за жизни
   */
-  _templateLives(gameState, lives, livesBonuses, livesBonusesTotal) {
+  static _templateLives(gameState, lives, livesBonuses, livesBonusesTotal) {
     if (gameState.win && lives) {
       return `
       <tr>
@@ -62,7 +62,7 @@ export default class StatsView extends AbstractView {
   /*
   * Штраф за медлительность
   */
-  _templateSlow(gameState, slowAnswersCount, slowBonuses, slowBonusesTotal) {
+  static _templateSlow(gameState, slowAnswersCount, slowBonuses, slowBonusesTotal) {
     if (gameState.win && slowAnswersCount) {
       return `
       <tr>
@@ -79,7 +79,7 @@ export default class StatsView extends AbstractView {
   /*
   * Итоговое количество баллов
   */
-  _templateTotalScore(gameState, totalScores) {
+  static _templateTotalScore(gameState, totalScores) {
     if (gameState.win) {
       return `
       <tr>
@@ -101,12 +101,12 @@ export default class StatsView extends AbstractView {
             <td colspan="2">
               ${statsBar(scoring.gameState)}
             </td>
-            ${this._templateCorrectScores(scoring.gameState, this._correctAnswerScores, scoring.correctScoresTotal)}
+            ${StatsView._templateCorrectScores(scoring.gameState, this._correctAnswerScores, scoring.correctScoresTotal)}
           </tr>
-          ${this._templateFast(scoring.gameState, scoring.fastAnswersCount, this._bonusScores.FAST, scoring.fastBonusesTotal)}
-          ${this._templateLives(scoring.gameState, scoring.lives, this._bonusScores.LIVES, scoring.livesBonusesTotal)}
-          ${this._templateSlow(scoring.gameState, scoring.slowAnswersCount, this._bonusScores.SLOW, scoring.slowBonusesTotal)}
-          ${this._templateTotalScore(scoring.gameState, scoring.totalScores)}
+          ${StatsView._templateFast(scoring.gameState, scoring.fastAnswersCount, this._bonusScores.FAST, scoring.fastBonusesTotal)}
+          ${StatsView._templateLives(scoring.gameState, scoring.lives, this._bonusScores.LIVES, scoring.livesBonusesTotal)}
+          ${StatsView._templateSlow(scoring.gameState, scoring.slowAnswersCount, this._bonusScores.SLOW, scoring.slowBonusesTotal)}
+          ${StatsView._templateTotalScore(scoring.gameState, scoring.totalScores)}
         </table>`).reverse().join(``)}
     </div>`;
   }

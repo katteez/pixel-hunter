@@ -19,6 +19,10 @@ export default class HeaderView extends AbstractView {
       </div>`;
   }
 
+  get timerElement() {
+    return this.element.querySelector(`.game__timer`);
+  }
+
   bind() {
     const goBackButton = this.element.querySelector(`.back`);
 
@@ -26,8 +30,4 @@ export default class HeaderView extends AbstractView {
   }
 
   onBackButtonClick() {}
-
-  get timerElement() {
-    return this.element.querySelector(`.game__timer`);
-  }
 }

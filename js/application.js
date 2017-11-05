@@ -62,6 +62,7 @@ export default class Application {
       }
       Application._changeHash(id);
     };
+
     window.addEventListener(`hashchange`, onHashChange);
     onHashChange();
   }
