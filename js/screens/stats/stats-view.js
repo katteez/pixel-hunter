@@ -11,6 +11,36 @@ export default class StatsView extends AbstractView {
     this._scores = scores;
   }
 
+  get template() {
+    return String.raw`
+    ${headerBack}
+    <div class="result">
+      <h1>${this._title}</h1>
+      ${this._scores.map((scoring, id) => `
+        <table class="result__table">
+          <tr>
+            <td class="result__number">${this._scores.length - id}.</td>
+            <td colspan="2">
+              ${statsBar(scoring.gameState)}
+            </td>
+            ${StatsView._templateCorrectScores(scoring.gameState, this._correctAnswerScores, scoring.correctScoresTotal)}
+          </tr>
+          ${StatsView._templateFast(scoring.gameState, scoring.fastAnswersCount, this._bonusScores.FAST, scoring.fastBonusesTotal)}
+          ${StatsView._templateLives(scoring.gameState, scoring.lives, this._bonusScores.LIVES, scoring.livesBonusesTotal)}
+          ${StatsView._templateSlow(scoring.gameState, scoring.slowAnswersCount, this._bonusScores.SLOW, scoring.slowBonusesTotal)}
+          ${StatsView._templateTotalScore(scoring.gameState, scoring.totalScores)}
+        </table>`).reverse().join(``)}
+    </div>`;
+  }
+
+  bind() {
+    const goBackButton = this.element.querySelector(`.back`);
+
+    goBackButton.addEventListener(`click`, this.onBackButtonClick);
+  }
+
+  onBackButtonClick() {}
+
   /*
   * Баллы за правильные ответы
   */
@@ -88,34 +118,4 @@ export default class StatsView extends AbstractView {
     }
     return ``;
   }
-
-  get template() {
-    return String.raw`
-    ${headerBack}
-    <div class="result">
-      <h1>${this._title}</h1>
-      ${this._scores.map((scoring, id) => `
-        <table class="result__table">
-          <tr>
-            <td class="result__number">${this._scores.length - id}.</td>
-            <td colspan="2">
-              ${statsBar(scoring.gameState)}
-            </td>
-            ${StatsView._templateCorrectScores(scoring.gameState, this._correctAnswerScores, scoring.correctScoresTotal)}
-          </tr>
-          ${StatsView._templateFast(scoring.gameState, scoring.fastAnswersCount, this._bonusScores.FAST, scoring.fastBonusesTotal)}
-          ${StatsView._templateLives(scoring.gameState, scoring.lives, this._bonusScores.LIVES, scoring.livesBonusesTotal)}
-          ${StatsView._templateSlow(scoring.gameState, scoring.slowAnswersCount, this._bonusScores.SLOW, scoring.slowBonusesTotal)}
-          ${StatsView._templateTotalScore(scoring.gameState, scoring.totalScores)}
-        </table>`).reverse().join(``)}
-    </div>`;
-  }
-
-  bind() {
-    const goBackButton = this.element.querySelector(`.back`);
-
-    goBackButton.addEventListener(`click`, this.onBackButtonClick);
-  }
-
-  onBackButtonClick() {}
 }

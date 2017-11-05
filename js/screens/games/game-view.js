@@ -12,16 +12,14 @@ export default class GameView extends AbstractView {
     return this._header;
   }
 
-  onFormClick() {}
-
-  continueGame() {}
-
-  onBackButtonClick() {}
-
   updateTime(time) {
     if (time === 5) {
       this._header.timerElement.classList.add(`flicker`);
     }
     this._header.timerElement.textContent = time;
   }
+
+  continueGame() {}
+
+  onFormClick() {}
 }

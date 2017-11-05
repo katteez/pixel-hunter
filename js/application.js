@@ -29,6 +29,13 @@ export default class Application {
     return this._userName;
   }
 
+  static _changeHash(id) {
+    const controller = this._routes[id];
+    if (controller) {
+      controller.init();
+    }
+  }
+
   static prepareDataAndInit() {
     greetingScreen.init();
     greetingScreen.fadeOut();
@@ -44,7 +51,6 @@ export default class Application {
   static init(gameData) {
     this._gameData = gameData;
     this._userName = ``;
-
     this._routes = {
       [ControllerId.GREETING]: greetingScreen,
       [ControllerId.RULES]: rulesScreen,
@@ -65,13 +71,6 @@ export default class Application {
 
     window.addEventListener(`hashchange`, onHashChange);
     onHashChange();
-  }
-
-  static _changeHash(id) {
-    const controller = this._routes[id];
-    if (controller) {
-      controller.init();
-    }
   }
 
   static showGreeting() {
