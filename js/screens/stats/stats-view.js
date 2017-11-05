@@ -19,11 +19,10 @@ export default class StatsView extends AbstractView {
       return `
       <td class="result__points">×&nbsp;${correctAnswerScores}</td>
       <td class="result__total">${correctScoresTotal}</td>`;
-    } else {
-      return String.raw`
-      <td class="result__total"></td>
-      <td class="result__total  result__total--final">fail</td>`;
     }
+    return String.raw`
+    <td class="result__total"></td>
+    <td class="result__total  result__total--final">fail</td>`;
   }
 
   /*
@@ -39,9 +38,8 @@ export default class StatsView extends AbstractView {
         <td class="result__points">×&nbsp;${fastBonuses}</td>
         <td class="result__total">${fastBonusesTotal}</td>
       </tr>`;
-    } else {
-      return ``;
     }
+    return ``;
   }
 
   /*
@@ -57,9 +55,8 @@ export default class StatsView extends AbstractView {
         <td class="result__points">×&nbsp;${livesBonuses}</td>
         <td class="result__total">${livesBonusesTotal}</td>
       </tr>`;
-    } else {
-      return ``;
     }
+    return ``;
   }
 
   /*
@@ -75,9 +72,8 @@ export default class StatsView extends AbstractView {
         <td class="result__points">×&nbsp;${slowBonuses}</td>
         <td class="result__total">-${slowBonusesTotal}</td>
       </tr>`;
-    } else {
-      return ``;
     }
+    return ``;
   }
 
   /*
@@ -89,9 +85,8 @@ export default class StatsView extends AbstractView {
       <tr>
         <td colspan="5" class="result__total  result__total--final">${totalScores}</td>
       </tr>`;
-    } else {
-      return ``;
     }
+    return ``;
   }
 
   get template() {

@@ -7,9 +7,8 @@ export default class Loader {
     return fetch(`${SERVER_URL}/questions`).then((response) => {
       if (response.ok) {
         return response.json();
-      } else {
-        throw new Error(`Неизвестный статус (${response.status}) ${response.statusText}`);
       }
+      throw new Error(`Неизвестный статус (${response.status}) ${response.statusText}`);
     });
   }
 
@@ -17,9 +16,8 @@ export default class Loader {
     return fetch(`${SERVER_URL}/stats/${name}`).then((response) => {
       if (response.ok) {
         return response.json();
-      } else {
-        throw new Error(`Неизвестный статус (${response.status}) ${response.statusText}`);
       }
+      throw new Error(`Неизвестный статус (${response.status}) ${response.statusText}`);
     });
   }
 
