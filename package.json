@@ -16,7 +16,7 @@
     "browser-sync": "2.18.8",
     "css-mqpacker": "6.0.0",
     "del": "2.2.2",
-    "eslint": "4.2.0",
+    "eslint": "6.5.1",
     "eslint-config-htmlacademy": "0.3.x",
     "gulp": "3.9.1",
     "gulp-better-rollup": "1.1.1",
