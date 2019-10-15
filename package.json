@@ -16,8 +16,8 @@
     "browser-sync": "2.18.8",
     "css-mqpacker": "6.0.0",
     "del": "2.2.2",
-    "eslint": "4.2.0",
-    "eslint-config-htmlacademy": "0.3.x",
+    "eslint": "5.13.0",
+    "eslint-config-htmlacademy": "0.5.x",
     "gulp": "3.9.1",
     "gulp-better-rollup": "1.1.1",
     "gulp-csso": "3.0.0",
@@ -30,7 +30,7 @@
     "gulp-sourcemaps": "2.6.1"
   },
   "engines": {
-    "node": "6.11.3"
+    "node": "10"
   },
   "babel": {
     "plugins": [
