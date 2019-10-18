@@ -18,6 +18,8 @@ html {
 }
 
 body {
+  margin: 0;
+  padding: 0;
   background: #a8c8c4 linear-gradient(to bottom left, #ccdeeb, #84b39e) no-repeat;
 
   @include regular-text;
