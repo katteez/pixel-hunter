@@ -1,113 +1,122 @@
-'use strict';
+import gulp from 'gulp';
+import { deleteAsync } from 'del';
+import dartSass from 'sass';
+import gulpSass from 'gulp-sass';
+import plumber from 'gulp-plumber';
+import postcss from 'gulp-postcss';
+import autoprefixer from 'autoprefixer';
+import mqpacker from 'mqpacker';
+import minify from 'gulp-csso';
+import rename from 'gulp-rename';
+import squoosh from 'gulp-libsquoosh';
+import rollup from 'gulp-better-rollup';
+import sourcemaps from 'gulp-sourcemaps';
+import mocha from 'gulp-mocha';
+import browser from 'browser-sync';
 
-const del = require('del');
-const gulp = require('gulp');
-const sass = require('gulp-sass');
-const plumber = require('gulp-plumber');
-const postcss = require('gulp-postcss');
-const autoprefixer = require('autoprefixer');
-const server = require('browser-sync').create();
-const mqpacker = require('css-mqpacker');
-const minify = require('gulp-csso');
-const rename = require('gulp-rename');
-const imagemin = require('gulp-imagemin');
-const rollup = require('gulp-better-rollup');
-const sourcemaps = require('gulp-sourcemaps');
-const mocha = require('gulp-mocha');
+export const test = () => {
+  return gulp.src(['js/**/*.test.js'], { read: false })
+    .pipe(mocha({
+      require: ['babel-core/register'],
+      reporter: 'spec'
+    }));
+}
 
-gulp.task('style', function () {
+const clean = () => {
+  return deleteAsync('build');
+};
+
+const sass = gulpSass(dartSass);
+const styles = () => {
   return gulp.src('sass/style.scss')
     .pipe(plumber())
     .pipe(sass())
     .pipe(postcss([
-      autoprefixer({
-        browsers: [
-          'last 1 version',
-          'last 2 Chrome versions',
-          'last 2 Firefox versions',
-          'last 2 Opera versions',
-          'last 2 Edge versions'
-        ]
-      }),
-      mqpacker({sort: true})
+      autoprefixer(),
+      mqpacker({sort: true}),
     ]))
-    .pipe(gulp.dest('build/css'))
-    .pipe(server.stream())
     .pipe(minify())
     .pipe(rename('style.min.css'))
-    .pipe(gulp.dest('build/css'));
-});
+    .pipe(gulp.dest('build/css'))
+    .pipe(browser.stream());
+};
 
-gulp.task('scripts', function () {
+const scripts = () => {
   return gulp.src('js/main.js')
     .pipe(plumber())
     .pipe(sourcemaps.init())
     .pipe(rollup({}, 'iife'))
     .pipe(sourcemaps.write(''))
     .pipe(gulp.dest('build/js/'));
-});
+}
 
-gulp.task('test', function () {
-  return gulp.src(['js/**/*.test.js'], { read: false })
-  .pipe(mocha({
-    compilers: ['js:babel-register'],
-    reporter: 'spec'
-  }));
-});
-
-gulp.task('imagemin', ['copy'], function () {
+const optimizeImages = () => {
   return gulp.src('build/img/**/*.{jpg,png,gif}')
-    .pipe(imagemin([
-      imagemin.optipng({optimizationLevel: 3}),
-      imagemin.jpegtran({progressive: true})
-    ]))
+    .pipe(squoosh())
     .pipe(gulp.dest('build/img'));
-});
+};
 
-
-gulp.task('copy-html', function () {
+const copyHtml = () => {
   return gulp.src('*.{html,ico}')
-    .pipe(gulp.dest('build'))
-    .pipe(server.stream());
-});
+    .pipe(gulp.dest('build'));
+}
 
-gulp.task('copy', ['copy-html', 'scripts', 'style'], function () {
-  return gulp.src([
+const copy = (done) => {
+  gulp.src([
     'fonts/**/*.{woff,woff2}',
     'img/*.*'
-  ], {base: '.'})
-    .pipe(gulp.dest('build'));
-});
+  ], {
+    base:'.'
+  })
+    .pipe(gulp.dest('build'))
+    done();
+};
 
-gulp.task('clean', function () {
-  return del('build');
-});
-
-gulp.task('js-watch', ['scripts'], function (done) {
-  server.reload();
-  done();
-});
-
-gulp.task('serve', ['assemble'], function () {
-  server.init({
-    server: './build',
+const server = (done) => {
+  browser.init({
+    server: {
+      baseDir: './build'
+    },
     notify: false,
     open: true,
     port: 3502,
+    cors: true,
     ui: false
   });
+  done();
+};
 
-  gulp.watch('sass/**/*.{scss,sass}', ['style']);
-  gulp.watch('*.html').on('change', (e) => {
-    if (e.type !== 'deleted') {
-      gulp.start('copy-html');
-    }
-  });
-  gulp.watch('js/**/*.js', ['js-watch']);
-});
+const reload = (done) => {
+  browser.reload();
+  done();
+};
 
-gulp.task('assemble', ['clean'], function () {
-  gulp.start('copy', 'style');
-});
+const watcher = () => {
+  gulp.watch('sass/**/*.{scss,sass}', gulp.series(styles));
+  gulp.watch('js/**/*.js', gulp.series(scripts));
+  gulp.watch('*.html', gulp.series(copyHtml, reload));
+}
 
-gulp.task('build', ['assemble', 'imagemin']);
+export const build = gulp.series(
+  clean,
+  copy,
+  optimizeImages,
+  gulp.parallel(
+    styles,
+    scripts,
+    copyHtml
+  ),
+);
+
+export default gulp.series(
+  clean,
+  copy,
+  gulp.parallel(
+    styles,
+    scripts,
+    copyHtml
+  ),
+  gulp.series(
+    server,
+    watcher
+  ));

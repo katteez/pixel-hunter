@@ -6,35 +6,44 @@
   "scripts": {
     "eslint": "eslint js/",
     "build": "gulp build",
-    "start": "gulp serve",
+    "start": "gulp",
     "test": "npm run eslint && gulp test"
   },
   "devDependencies": {
-    "autoprefixer": "6.7.7",
-    "babel-plugin-transform-es2015-modules-commonjs": "6.26.0",
-    "babel-register": "6.26.0",
-    "browser-sync": "2.18.8",
-    "css-mqpacker": "6.0.0",
-    "del": "2.2.2",
-    "eslint": "5.13.0",
-    "eslint-config-htmlacademy": "0.5.x",
-    "gulp": "3.9.1",
-    "gulp-better-rollup": "1.1.1",
-    "gulp-csso": "3.0.0",
-    "gulp-imagemin": "3.2.0",
-    "gulp-mocha": "4.3.1",
-    "gulp-plumber": "1.1.0",
-    "gulp-postcss": "7.0.0",
-    "gulp-rename": "1.2.2",
-    "gulp-sass": "3.1.0",
-    "gulp-sourcemaps": "2.6.1"
+    "autoprefixer": "10.4.0",
+    "babel-core": "6.26.3",
+    "babel-plugin-transform-es2015-modules-commonjs": "6.26.2",
+    "browser-sync": "2.29.3",
+    "del": "7.0.0",
+    "eslint": "8.41.0",
+    "eslint-config-htmlacademy": "9.1.x",
+    "gulp": "4.0.2",
+    "gulp-better-rollup": "4.0.1",
+    "gulp-csso": "4.0.1",
+    "gulp-libsquoosh": "1.1.2",
+    "gulp-mocha": "8.0.0",
+    "gulp-plumber": "1.2.1",
+    "gulp-postcss": "9.0.1",
+    "gulp-rename": "2.0.0",
+    "gulp-sass": "5.1.0",
+    "gulp-sourcemaps": "3.0.0",
+    "mqpacker": "7.0.0",
+    "sass": "1.62.1"
   },
+  "browserslist": [
+    "last 1 version",
+    "last 2 Chrome versions",
+    "last 2 Firefox versions",
+    "last 2 Opera versions",
+    "last 2 Edge versions"
+  ],
   "engines": {
-    "node": "10"
+    "node": "16"
   },
   "babel": {
     "plugins": [
       "transform-es2015-modules-commonjs"
     ]
-  }
+  },
+  "type": "module"
 }
